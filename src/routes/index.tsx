@@ -4,7 +4,14 @@ import { For, createResource } from "solid-js";
 import Counter from "~/components/Counter";
 
 export default function Home() {
-  const [loadedTime] = createResource(async () => new Date().toLocaleTimeString());
+  const [loadedTime] = createResource(async () => {
+    return new Promise<string>((resolve) => {
+      console.log("this shouldn't log in the console");
+      setTimeout(() => {
+        resolve(new Date().toLocaleTimeString());
+      }, 2000);
+    });
+  });
 
   return (
     <main class="text-center mx-auto text-gray-700 p-4">
