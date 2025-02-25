@@ -7,8 +7,10 @@
     "start": "vinxi start"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@solidjs/router": "^0.15.0",
     "@solidjs/start": "^1.1.0",
+    "@types/google.maps": "^3.58.1",
     "solid-js": "^1.9.2",
     "vinxi": "^0.5.3"
   },

@@ -1,8 +1,120 @@
 @import "tailwindcss";
 
+/* Self-hosted font declarations */
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playwrite AU TAS';
+  src: url('/fonts/Playwrite_AU_TAS/PlaywriteAUTAS-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/fonts/Lato/Lato-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/fonts/Lato/Lato-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Font fallback variables */
 :root {
+  /* Animation timing variables */
+  --drawer-open-time: 0.4s;
+  --neon-start-delay: 0.3s;
+  --neon-animation-time: 1.2s;
+  --content-fade-delay: 0.5s;
+  --content-fade-time: 1.5s;
+  --map-fade-delay: 0.8s;
+  --map-fade-time: 1.2s;
+  --glow-pulse-duration: 9s; /* Duration for the glow pulsing effect */
+  
+  /* Neon effect variables */
+  --neon-color: #00ff80;
+  --neon-glow-1: 0 0 5px var(--neon-color);
+  --neon-glow-2: 0 0 10px var(--neon-color);
+  --neon-glow-3: 0 0 20px var(--neon-color);
+  --neon-glow-4: 0 0 25px var(--neon-color);
+  --neon-glow-5: 0 0 35px var(--neon-color);
+  
+  /* Font variables */
+  --font-fallback-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-fallback-serif: Georgia, Cambria, "Times New Roman", Times, serif;
   --background-rgb: 214, 219, 220;
   --foreground-rgb: 0, 0, 0;
+}
+
+@theme {
+  /* Font families */
+  --font-lato: "Lato", var(--font-fallback-sans);
+  --font-playwrite: "Playwrite AU TAS", var(--font-fallback-serif);
+  --font-roboto: "Roboto", var(--font-fallback-sans);
+}
+
+/* Button shimmer effect */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    transparent 80%
+  );
+  transform: translate(-100%, -100%);
+  transition: transform 0.6s ease-in-out;
+  z-index: 1;
+  /* Reset instantly when hover removed */
+  transition-delay: 0s;
+}
+
+.btn-shimmer:hover::after {
+  transform: translate(100%, 100%);
+  transition-delay: 0s;
+}
+
+.btn-shimmer:not(:hover)::after {
+  transition: none;
+}
+
+/* Add a transition for smoother UI state changes */
+.main-content {
+  transition: opacity 0.15s ease;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,6 +125,239 @@
 }
 
 body {
-  background: rgb(var(--background-rgb));
+  background: #000;
   color: rgb(var(--foreground-rgb));
+}
+
+/* Ensure map is always ready behind content */
+.map-container {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transition: opacity 0.5s ease-in-out;
+  transition-delay: 0.1s; /* Small delay to let drawer start opening */
+}
+
+.map-container.visible {
+  opacity: 1;
+}
+
+.resize-handle {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 255, 128, 0.05) 0%,
+    rgba(0, 255, 128, 0.1) 50%,
+    rgba(0, 255, 128, 0.05) 100%
+  );
+}
+
+.active {
+  background: rgba(0, 255, 128, 0.6) !important;
+  animation: initialNeonFlicker 0.6s ease-in-out forwards;
+}
+
+.active::before {
+  background-color: rgba(0, 255, 128, 0.8);
+}
+
+/* Gentle pulsing glow animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3), var(--neon-glow-4);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2);
+    opacity: 0.95;
+  }
+  100% {
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3), var(--neon-glow-4);
+    opacity: 1;
+  }
+}
+
+@keyframes initialNeonFlicker {
+  0% { 
+    opacity: 0.4; 
+    box-shadow: none; 
+  }
+  10% { 
+    opacity: 0.9; 
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
+  }
+  20% { 
+    opacity: 0.4; 
+    box-shadow: none; 
+  }
+  30%, 35% { 
+    opacity: 0.9; 
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
+  }
+  40% { 
+    opacity: 0.4; 
+    box-shadow: none; 
+  }
+  45%, 100% { 
+    opacity: 1; 
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3), var(--neon-glow-4);
+  }
+}
+
+@keyframes mapFadeIn {
+  0%, 40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes mapFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes contentFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes contentFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Adjust timing of content animations */
+.content-fade-out {
+  animation: contentFadeOut 400ms ease-in-out forwards;
+  animation-delay: 100ms; /* Slight delay to ensure drawer is visible first */
+}
+
+.content-fade-in {
+  animation: contentFadeIn 400ms ease-in-out forwards;
+}
+
+.map-fade-in {
+  animation: mapFadeIn 2s ease-in-out forwards;
+}
+
+.map-fade-out {
+  animation: mapFadeOut 1s ease-in-out forwards;
+}
+
+@keyframes drawerHandleNeon {
+  0%, 30% {
+    opacity: 0.4; 
+    box-shadow: none;
+    background: linear-gradient(
+      to right,
+      rgba(0, 255, 128, 0.1),
+      rgba(0, 255, 128, 0.2),
+      rgba(0, 255, 128, 0.1)
+    );
+  }
+  35% { 
+    opacity: 0.4; 
+    box-shadow: none;
+    background: linear-gradient(
+      to right,
+      rgba(0, 255, 128, 0.1),
+      rgba(0, 255, 128, 0.2),
+      rgba(0, 255, 128, 0.1)
+    );
+  }
+  40% { 
+    opacity: 0.9; 
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2);
+    background: linear-gradient(
+      to right,
+      rgba(0, 255, 128, 0.2),
+      rgba(0, 255, 128, 0.5),
+      rgba(0, 255, 128, 0.2)
+    );
+  }
+  45% { 
+    opacity: 0.4; 
+    box-shadow: none;
+    background: linear-gradient(
+      to right,
+      rgba(0, 255, 128, 0.1),
+      rgba(0, 255, 128, 0.2),
+      rgba(0, 255, 128, 0.1)
+    );
+  }
+  50%, 55% { 
+    opacity: 0.9; 
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
+    background: linear-gradient(
+      to right,
+      rgba(0, 255, 128, 0.2),
+      rgba(0, 255, 128, 0.6),
+      rgba(0, 255, 128, 0.2)
+    );
+  }
+  60% { 
+    opacity: 0.4; 
+    box-shadow: none;
+    background: linear-gradient(
+      to right,
+      rgba(0, 255, 128, 0.1),
+      rgba(0, 255, 128, 0.3),
+      rgba(0, 255, 128, 0.1)
+    );
+  }
+  65%, 100% { 
+    opacity: 1; 
+    box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3), var(--neon-glow-4);
+    background: linear-gradient(
+      to right,
+      rgba(0, 255, 128, 0.4),
+      rgba(0, 255, 128, 0.6),
+      rgba(0, 255, 128, 0.4)
+    );
+  }
+}
+
+.drawer-handle {
+  background: linear-gradient(
+    to right,
+    rgba(0, 255, 128, 0.4),
+    rgba(0, 255, 128, 0.6),
+    rgba(0, 255, 128, 0.4)
+  );
+  /* Initial flicker animation, then transition to the gentle pulsing */
+  animation: 
+    drawerHandleNeon 1.2s ease-in-out forwards, 
+    pulseGlow var(--glow-pulse-duration) ease-in-out infinite 1.2s;
+  transition: all 0.3s ease;
+}
+
+/* Enhanced hover effect for drawer handle */
+.drawer-handle:hover {
+  background: linear-gradient(
+    to right,
+    rgba(0, 255, 128, 0.5),
+    rgba(0, 255, 128, 0.8),
+    rgba(0, 255, 128, 0.5)
+  );
+  box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
+  opacity: 1;
+  animation-play-state: paused; /* Pause the animation on hover */
 }
