@@ -142,7 +142,6 @@ export default function Drawer(props: DrawerProps) {
     const startTime = performance.now();
     const duration = 300; // Slightly faster close animation
     const startWidth = drawerWidth();
-    const targetWidth = 0;
 
     // Animation function
     const animate = (currentTime: number) => {
@@ -158,18 +157,15 @@ export default function Drawer(props: DrawerProps) {
       const currentWidth = startWidth - startWidth * easeOutQuart(progress);
       setDrawerWidth(currentWidth);
 
-      // Continue animation if not complete
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
       } else {
-        // Clean up and call onClose when animation completes
         animationFrame = null;
         props.onClose();
         setIsAnimating(false);
       }
     };
 
-    // Start animation
     animationFrame = requestAnimationFrame(animate);
   };
 
@@ -199,7 +195,6 @@ export default function Drawer(props: DrawerProps) {
     }
   });
 
-  // Handle initial opening
   createEffect(() => {
     if (props.isOpen && !isAnimating() && drawerWidth() === 0) {
       const targetWidth = calculateDrawerWidth();
@@ -207,7 +202,6 @@ export default function Drawer(props: DrawerProps) {
     }
   });
 
-  // Handle external drawerWidth prop
   createEffect(() => {
     if (props.drawerWidth !== undefined && !isAnimating() && !isDragging()) {
       setDrawerWidth(props.drawerWidth);

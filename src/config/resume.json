@@ -1,0 +1,66 @@
+{
+  "rallyHere": {
+    "name": "RallyHere",
+    "subname": "(subsidary of Hi-Rez)",
+    "lat": 34.0598,
+    "lng": -84.2456,
+    "logo": "rallyhere-logo.png",
+    "cityImage": "alph-danger.png",
+    "years": "Jun 2023-Present",
+    "description": "Joined as Frontend Lead to create a developer portal for a white-labeled game management system. Architected and implemented SaaS developer portal serving multiple development teams using React, TypeScript, and FastAPI, creating a foundational system that improved team productivity. Created automated tooling that transforms OpenAPI specifications into a data map for the rendering of UI components, streamlining development workflow and reducing manual updates. Implemented robust state management and caching strategies using React Query and Cloudflare, ensuring reliability in production. Established performance and reliability targets for products, informing production monitoring and development priorities. Led technical knowledge sharing sessions and established mentoring program to improve team capabilities with React and TypeScript. Created architecture diagrams and technical documentation needed for security reviews and cross-team collaboration. Established frontend development standards emphasizing maintainability, performance, and developer experience."
+  },
+  "hiRez": {
+    "name": "Hi-Rez Studios",
+    "lat": 34.0615,
+    "lng": 33.9304,
+    "logo": "hirez-logo-v3.png",
+    "cityImage": "alph-danger.png",
+    "years": "Jan 2017-Jun 2023",
+    "description": "I started as the Web Development Manager, and later promoted to Director of Web Development. Managed cross-functional team of 12 (developers, designers, producers, and artists) while maintaining hands-on involvement in technical architecture. I created foundational code elements and reusable component libraries that improved code quality and development velocity. Transformed legacy infrastructure into modern React-based architecture with caching strategies using NGINX and Cloudflare CDN. Implemented custom A/B testing framework with robust monitoring and logging, enabling data-driven product decisions. Spearheaded initiative to streamline processes across 60-person publishing organization by interviewing 60+ team members to understand pain points. Managed cloud infrastructure on AWS and Azure, including load balancers, monitoring services, and automated deployment scripts. Created and deployed automated test cases and performance testing procedures to ensure system reliability. Proactively monitored production service levels and system performance, implementing improvements to maintain reliability."
+  },
+  "freelance": {
+    "name": "Gallagher Design, Razorfish",
+    "lat": 33.7373,
+    "lng": -84.3637,
+    "logo": "gpt-logo.webp",
+    "cityImage": "atl-pray.png",
+    "years": "2013-2016",
+    "description": "Logo courtesy of a perfect ChatGPT one-shot prompt. I worked as a Freelance Developer on large-scale client projects for major companies like AT&T and Google using modern frontend technologies. Project managed and developed complex interactive solutions while creating technical specifications and development standards. Notable project included leading development of real-time interactive exhibits for Google Partner Plex Installation using AngularJS. Focused on delivering high-quality solutions while managing both the technical implementation and project management aspects of complex digital projects."
+  },
+  "frogDesign": {
+    "name": "frog Design",
+    "lat": 40.7266,
+    "lng": -74.0075,
+    "logo": "frog-logo.png",
+    "cityImage": "niko.png",
+    "years": "2011-2012",
+    "description": "As Senior Program Manager, led design and specification of developer sandbox for American Express' SERVE payment platform, collaborating with UX team to create intuitive developer sandbox environments. Created proposals, estimates, budgets, schedules, and functional specs to effectively communicate a project's business, technical, and design scope for each project. Focused on bridging the gap between design, technology, and business requirements to deliver innovative digital solutions."
+  },
+  "nyt": {
+    "name": "The New York Times",
+    "lat": 40.7564,
+    "lng": -73.9913,
+    "logo": "nyt-logo.png",
+    "cityImage": "niko.png",
+    "years": "2009-2011",
+    "description": "As Interactive Production Manager in Creative Services, managed development infrastructure decisions across multiple technical platforms. Led technical implementation of multiple consumer-facing digital products while serving as technical liaison between Creative Services and engineering teams, translating business requirements into technical specifications. Drove cross-team collaboration to deliver high-quality digital experiences for one of the world's most prestigious media organizations."
+  },
+  "schematic": {
+    "name": "Schematic (acquired by VML)",
+    "lat": 40.7343,
+    "lng": -73.9918,
+    "logo": "schematic-logo.png",
+    "cityImage": "  ",
+    "years": "2007-2009",
+    "description": "As Project Manager, led development of NBC Olympics Silverlight Video Player, coordinating between multiple, distributed technical teams and stakeholders. Established development standards and processes for Reuters Innovation Center platform. Managed technical implementation of Panasonic Viera Cast interface, focusing on developer workflow optimization. Created standardized process for technical documentation and handoff between development teams."
+  },
+  "previous": {
+    "name": "Previous Experience",
+    "lat": 42.3483,
+    "lng": -71.0874,
+    "logo": "tbg-logo.png",
+    "cityImage": "boston_ma.jpg",
+    "years": "2004-2007",
+    "description": "Held various project management and production roles at prominent digital agencies including LBi (acquired by Digitas), POKE NY, BEAM Interactive, and The Barbarian Group. Starting as Associate Producer and advancing to Senior Project Manager, managed diverse digital projects while developing expertise in technical project management, client communication, and cross-functional team leadership. Graduated from Tufts University in 2004 with a Bachelor of Arts in Economics and a Minor in English. Became a Certified Scrum Master in 2008."
+  }
+}

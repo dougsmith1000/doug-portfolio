@@ -15,11 +15,12 @@ type MapsEventListener = google.maps.MapsEventListener;
 // Props interface for the component
 interface GoogleMapProps {
   onLoad?: () => void;
+  latLng?: LatLngLiteral;
 }
 
 // Location coordinates
-const START_LOCATION: LatLngLiteral = { lat: 37.7749, lng: -122.4194 }; // San Francisco, CA
-const END_LOCATION: LatLngLiteral = { lat: 33.749, lng: -84.388 }; // Atlanta, GA
+const START_LOCATION: LatLngLiteral = { lat: 41.0437, lng: -74.2156 };
+const END_LOCATION: LatLngLiteral = { lat: 34.0598, lng: -84.2456 };
 
 // US country width approximation (longitude span)
 const US_WIDTH = 58; // Approximate longitude span of continental US (125°W to 67°W)
@@ -149,7 +150,6 @@ function smoothZoom(map: GoogleMap, targetZoom: number, currentZoom: number): Pr
 }
 
 export default function GoogleMap(props: GoogleMapProps) {
-  // Don't initialize anything on the server
   if (isServer) {
     return null;
   }
@@ -277,9 +277,8 @@ export default function GoogleMap(props: GoogleMapProps) {
       currentMap.fitBounds(bounds, { top: 100, right: 100, bottom: 100, left: 100 });
 
       // Small delay
-      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
+      // await new Promise<void>((resolve) => setTimeout(resolve, 1000));
 
-      // Pan to the destination (Atlanta)
       currentMap.panTo(END_LOCATION);
 
       // Wait for the pan to complete

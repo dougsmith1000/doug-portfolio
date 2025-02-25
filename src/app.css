@@ -41,9 +41,16 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Arsenal SC';
+  src: url('/fonts/Arsenal_SC/ArsenalSC-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Font fallback variables */
 :root {
-  /* Animation timing variables */
   --drawer-open-time: 0.4s;
   --neon-start-delay: 0.3s;
   --neon-animation-time: 1.2s;
@@ -51,9 +58,8 @@
   --content-fade-time: 1.5s;
   --map-fade-delay: 0.8s;
   --map-fade-time: 1.2s;
-  --glow-pulse-duration: 9s; /* Duration for the glow pulsing effect */
+  --glow-pulse-duration: 9s; 
   
-  /* Neon effect variables */
   --neon-color: #00ff80;
   --neon-glow-1: 0 0 5px var(--neon-color);
   --neon-glow-2: 0 0 10px var(--neon-color);
@@ -61,7 +67,6 @@
   --neon-glow-4: 0 0 25px var(--neon-color);
   --neon-glow-5: 0 0 35px var(--neon-color);
   
-  /* Font variables */
   --font-fallback-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --font-fallback-serif: Georgia, Cambria, "Times New Roman", Times, serif;
   --background-rgb: 214, 219, 220;
@@ -69,13 +74,12 @@
 }
 
 @theme {
-  /* Font families */
   --font-lato: "Lato", var(--font-fallback-sans);
   --font-playwrite: "Playwrite AU TAS", var(--font-fallback-serif);
   --font-roboto: "Roboto", var(--font-fallback-sans);
+  --font-arsenal: "Arsenal", var(--font-fallback-sans);
 }
 
-/* Button shimmer effect */
 .btn-shimmer {
   position: relative;
   overflow: hidden;
@@ -99,20 +103,16 @@
   transform: translate(-100%, -100%);
   transition: transform 0.6s ease-in-out;
   z-index: 1;
-  /* Reset instantly when hover removed */
-  transition-delay: 0s;
 }
 
 .btn-shimmer:hover::after {
   transform: translate(100%, 100%);
-  transition-delay: 0s;
 }
 
 .btn-shimmer:not(:hover)::after {
   transition: none;
 }
 
-/* Add a transition for smoother UI state changes */
 .main-content {
   transition: opacity 0.15s ease;
 }
@@ -125,18 +125,17 @@
 }
 
 body {
-  background: #000;
+  background: #032e15;
   color: rgb(var(--foreground-rgb));
 }
 
-/* Ensure map is always ready behind content */
 .map-container {
   opacity: 0;
   position: absolute;
   inset: 0;
   z-index: 0;
   transition: opacity 0.5s ease-in-out;
-  transition-delay: 0.1s; /* Small delay to let drawer start opening */
+  transition-delay: 0.1s;
 }
 
 .map-container.visible {
@@ -161,7 +160,6 @@ body {
   background-color: rgba(0, 255, 128, 0.8);
 }
 
-/* Gentle pulsing glow animation */
 @keyframes pulseGlow {
   0% {
     box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3), var(--neon-glow-4);
@@ -244,10 +242,9 @@ body {
   }
 }
 
-/* Adjust timing of content animations */
 .content-fade-out {
   animation: contentFadeOut 400ms ease-in-out forwards;
-  animation-delay: 100ms; /* Slight delay to ensure drawer is visible first */
+  animation-delay: 100ms;
 }
 
 .content-fade-in {
@@ -342,14 +339,12 @@ body {
     rgba(0, 255, 128, 0.6),
     rgba(0, 255, 128, 0.4)
   );
-  /* Initial flicker animation, then transition to the gentle pulsing */
   animation: 
     drawerHandleNeon 1.2s ease-in-out forwards, 
     pulseGlow var(--glow-pulse-duration) ease-in-out infinite 1.2s;
   transition: all 0.3s ease;
 }
 
-/* Enhanced hover effect for drawer handle */
 .drawer-handle:hover {
   background: linear-gradient(
     to right,
@@ -359,5 +354,100 @@ body {
   );
   box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
   opacity: 1;
-  animation-play-state: paused; /* Pause the animation on hover */
+}
+
+/* Add fadeIn animation for resume descriptions */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(254, 249, 195, 0.7); /* yellow-100 with opacity */
+  border-radius: 8px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(254, 249, 195, 0.9);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(254, 249, 195, 0.7) transparent;
+}
+
+/* Ease-out-back animation for the job details panel */
+.ease-out-back {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Custom scrollbar for the job description panel */
+.job-description-panel {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.duration-400 {
+  transition-duration: 400ms;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Make sure the job panel transition is properly defined */
+.translate-x-0 {
+  transform: translateX(0);
+}
+
+.-translate-x-full {
+  transform: translateX(-100%);
 }
