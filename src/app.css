@@ -57,7 +57,7 @@
   --content-fade-delay: 0.5s;
   --content-fade-time: 1.5s;
   --map-fade-delay: 0.8s;
-  --map-fade-time: 1.2s;
+  --map-fade-time: 0.8s;
   --glow-pulse-duration: 9s; 
   
   --neon-color: #00ff80;
@@ -450,4 +450,28 @@ body {
 
 .-translate-x-full {
   transform: translateX(-100%);
+}
+
+/* City image animation from top */
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideInFromTop {
+  animation: slideInFromTop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.translate-y-0 {
+  transform: translateY(0);
+}
+
+.-translate-y-full {
+  transform: translateY(-100%);
 }

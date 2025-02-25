@@ -14,6 +14,8 @@ export default function Index() {
   const [showJobDetails, setShowJobDetails] = createSignal(false);
   const [isTransitioning, setIsTransitioning] = createSignal(false);
   const [jobToShow, setJobToShow] = createSignal<string | null>(null);
+  const [showCityImage, setShowCityImage] = createSignal(false);
+  const [dropMarker, setDropMarker] = createSignal(false);
 
   const handleResumeClick = (e: MouseEvent, position: "left" | "right") => {
     if (isServer) return;
@@ -46,12 +48,18 @@ export default function Index() {
       setTimeout(() => {
         setShowMap(false);
         setSelectedJob(null);
+        setShowCityImage(false);
+        setDropMarker(false);
       }, 300);
     }
   };
 
   const handleJobSelect = (jobKey: string) => {
     if (isServer) return;
+
+    // Hide city image and reset marker immediately when changing jobs
+    setShowCityImage(false);
+    setDropMarker(false);
 
     if (showJobDetails() && !isTransitioning()) {
       if (selectedJob() === jobKey) {
@@ -65,22 +73,49 @@ export default function Index() {
           setJobToShow(jobKey);
           setShowJobDetails(true);
           setIsTransitioning(false);
+
+          // Show city image after job details have appeared
+          setTimeout(() => {
+            setShowCityImage(true);
+
+            // We no longer need to manually trigger the marker drop
+            // as it's handled by the map component after animation
+          }, 400);
         }, 400);
       }
     } else {
       setSelectedJob(jobKey);
       setJobToShow(jobKey);
       setShowJobDetails(true);
+
+      // Show city image after job details have appeared
+      setTimeout(() => {
+        setShowCityImage(true);
+
+        // We no longer need to manually trigger the marker drop
+        // as it's handled by the map component after animation
+      }, 400);
     }
   };
 
   createEffect(() => {
     if (!rightDrawerOpen()) {
       setShowJobDetails(false);
+      setShowCityImage(false);
+      setDropMarker(false);
     } else {
-      setSelectedJob(Object.keys(resumeData)[0]);
-      setJobToShow(Object.keys(resumeData)[0]);
+      const firstJobKey = Object.keys(resumeData)[0];
+      setSelectedJob(firstJobKey);
+      setJobToShow(firstJobKey);
       setShowJobDetails(true);
+
+      // Show city image after drawer is fully open
+      setTimeout(() => {
+        setShowCityImage(true);
+
+        // We no longer need to manually trigger the marker drop
+        // as it's handled by the map component after animation
+      }, 600);
     }
   });
 
@@ -90,12 +125,18 @@ export default function Index() {
     return resumeData[key as keyof typeof resumeData];
   };
 
+  const selectedJobCoordinates = () => {
+    const data = selectedJobData();
+    if (!data) return null;
+    return { lat: data.lat, lng: data.lng };
+  };
+
   return (
     <div class="h-screen w-screen flex bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-hidden">
       <div class="absolute inset-0 z-0">
         <Show when={!isServer && showMap()}>
           <div class="w-full h-full map-fade-in">
-            <GoogleMap />
+            <GoogleMap markerPosition={selectedJobCoordinates} />
           </div>
         </Show>
       </div>
@@ -135,6 +176,26 @@ export default function Index() {
       </div>
 
       <div
+        class="fixed left-[200px] bottom-0 z-20 mx-auto max-w-md w-full transform transition-all duration-300 ease-out-back pointer-events-none"
+        classList={{
+          "-translate-y-0": showCityImage(),
+          "translate-y-full": !showCityImage(),
+        }}
+      >
+        <Show when={selectedJobData()?.cityImage}>
+          <div class="mr-6 ml-4 mt-6 shadow-lg relative pointer-events-auto">
+            <div class="relative z-10 bg-transparent overflow-hidden text-center">
+              <img
+                src={`/cities/${selectedJobData()?.cityImage}`}
+                alt={`${selectedJobData()?.name} location`}
+                class="max-h-[600px]"
+              />
+            </div>
+          </div>
+        </Show>
+      </div>
+
+      <div
         class="fixed left-0 top-1/8 z-20 max-w-md w-full transform transition-transform duration-400 ease-out-back pointer-events-none"
         classList={{
           "translate-x-0": showJobDetails(),
@@ -144,7 +205,7 @@ export default function Index() {
         <Show when={selectedJobData()}>
           <div class="ml-6 mr-4 shadow-lg relative pointer-events-auto animate-fadeIn">
             <div
-              class="relative z-10 bg-neutral-900/95 rounded-md p-5 
+              class="relative z-10 bg-neutral-900/80 rounded-md p-5 
                      border-2 border-[#00ff80]/60 
                      shadow-[0_0_10px_rgba(0,255,128,0.3),0_0_20px_rgba(0,255,128,0.2)] 
                      transition-all duration-300 hover:shadow-[0_0_12px_rgba(0,255,128,0.4),0_0_24px_rgba(0,255,128,0.3)]"
