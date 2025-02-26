@@ -13,7 +13,6 @@ type MapTypeStyle = google.maps.MapTypeStyle;
 type MapsEventListener = google.maps.MapsEventListener;
 type Marker = google.maps.Marker;
 
-// Props interface for the component
 interface GoogleMapProps {
   onLoad?: () => void;
   latLng?: LatLngLiteral;
@@ -24,11 +23,9 @@ interface GoogleMapProps {
 const START_LOCATION: LatLngLiteral = { lat: 41.0437, lng: -74.2156 };
 const DEFAULT_END_LOCATION: LatLngLiteral = { lat: 34.0598, lng: -84.2456 };
 
-// US country width approximation (longitude span)
-const US_WIDTH = 58; // Approximate longitude span of continental US (125°W to 67°W)
+const US_WIDTH = 58;
 const ONE_THIRD_US_WIDTH = US_WIDTH / 3;
 
-// Style with all roads and labels visible (for initial view)
 const INITIAL_MAP_STYLES: MapTypeStyle[] = [
   {
     featureType: "all",
@@ -42,7 +39,6 @@ const INITIAL_MAP_STYLES: MapTypeStyle[] = [
   },
 ];
 
-// Simplified map style with town and state labels always visible
 const MINIMAL_MAP_STYLES: MapTypeStyle[] = [
   {
     featureType: "all",
@@ -66,7 +62,6 @@ const MINIMAL_MAP_STYLES: MapTypeStyle[] = [
   },
 ];
 
-// Style with roads visible (for after panning)
 const ROAD_VISIBLE_STYLES: MapTypeStyle[] = [
   {
     featureType: "all",
@@ -95,16 +90,11 @@ const ROAD_VISIBLE_STYLES: MapTypeStyle[] = [
   },
 ];
 
-/**
- * Calculate the distance between two points (simplified to longitude difference)
- */
 function calculateDistance(start: LatLngLiteral, end: LatLngLiteral): number {
-  // Calculate the absolute longitude difference
   const lngDiff = Math.abs(end.lng - start.lng);
   return lngDiff;
 }
 
-// Create a loader instance with our API key - but only on the client
 const loader = !isServer
   ? new Loader({
       apiKey: GOOGLE_MAPS_API_KEY,
@@ -113,9 +103,6 @@ const loader = !isServer
     })
   : null;
 
-/**
- * Smoothly zoom the map to a target zoom level
- */
 function smoothZoom(map: GoogleMap, targetZoom: number, currentZoom: number): Promise<void> {
   return new Promise<void>((resolve) => {
     if (currentZoom === targetZoom) {
@@ -123,20 +110,15 @@ function smoothZoom(map: GoogleMap, targetZoom: number, currentZoom: number): Pr
       return;
     }
 
-    // Determine if we're zooming in or out
     const zoomingIn = currentZoom < targetZoom;
     const nextZoom = zoomingIn ? currentZoom + 1 : currentZoom - 1;
 
-    // Add a listener for the zoom_changed event
     const zoomListener: MapsEventListener = google.maps.event.addListener(map, "zoom_changed", () => {
-      // Remove the listener once the zoom has changed
       google.maps.event.removeListener(zoomListener);
 
-      // Continue with the next zoom level
       smoothZoom(map, targetZoom, nextZoom).then(resolve);
     });
 
-    // Set the next zoom level after a short delay
     setTimeout(() => {
       map.setZoom(nextZoom);
     }, 80);
@@ -149,7 +131,6 @@ export default function GoogleMap(props: GoogleMapProps) {
   }
 
   let mapContainer: HTMLDivElement | undefined;
-  const [isScriptLoading, setIsScriptLoading] = createSignal(false);
   const [map, setMap] = createSignal<GoogleMap | undefined>();
   const [isAnimating, setIsAnimating] = createSignal(false);
   const [hasAnimated, setHasAnimated] = createSignal(false);
@@ -159,45 +140,36 @@ export default function GoogleMap(props: GoogleMapProps) {
   const [initialAnimationComplete, setInitialAnimationComplete] = createSignal(false);
   const [lastAnimatedPosition, setLastAnimatedPosition] = createSignal<LatLngLiteral | null>(null);
 
-  // Initialize map when component mounts
   createEffect(() => {
     if (mapContainer && !isServer) {
       initializeMap();
     }
   });
 
-  // Effect to handle job selection and map animation
   createEffect(() => {
     const currentMap = map();
     const position = props.markerPosition && props.markerPosition();
 
     if (currentMap && position && initialAnimationComplete()) {
-      // Check if we've already animated to this position to prevent loops
       const lastPosition = lastAnimatedPosition();
       if (lastPosition && lastPosition.lat === position.lat && lastPosition.lng === position.lng) {
-        return; // Skip if we've already animated to this position
+        return;
       }
 
-      // If we have a map, position, and initial animation is done, animate to the new position
       animateToLocation(position);
     }
   });
 
-  /**
-   * Animate the map to a specific location
-   */
   async function animateToLocation(destination: LatLngLiteral): Promise<void> {
     const currentMap = map();
     if (!currentMap || isAnimating() || isServer) {
       return;
     }
 
-    // Store this position as the last one we animated to
     setLastAnimatedPosition(destination);
     setIsAnimating(true);
 
     try {
-      // Calculate distance to determine zoom levels
       const currentCenter = currentMap.getCenter();
       if (!currentCenter) {
         throw new Error("Map center is undefined");
@@ -206,7 +178,7 @@ export default function GoogleMap(props: GoogleMapProps) {
       const distance = calculateDistance(currentCenter.toJSON(), destination);
       const isLongDistance = distance > ONE_THIRD_US_WIDTH / 2;
 
-      if (distance < 0.02) {
+      if (distance < 0.1) {
         currentMap.panTo(destination);
         await new Promise<void>((resolve) => setTimeout(resolve, 500));
 
@@ -220,6 +192,8 @@ export default function GoogleMap(props: GoogleMapProps) {
       const minZoom = isLongDistance ? 5 : 7;
 
       const currentZoom = currentMap.getZoom() || maxZoom;
+
+      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
 
       if (currentZoom > minZoom + 2) {
         currentMap.setOptions({
@@ -298,8 +272,6 @@ export default function GoogleMap(props: GoogleMapProps) {
     }
 
     try {
-      setIsScriptLoading(true);
-
       await loader.load();
 
       setStartLocation(START_LOCATION);
@@ -319,14 +291,11 @@ export default function GoogleMap(props: GoogleMapProps) {
       const mapInstance = new google.maps.Map(mapContainer, mapOptions);
       setMap(mapInstance);
 
-      // Call the onLoad callback if provided
       if (props.onLoad) {
         props.onLoad();
       }
     } catch (error) {
       console.error("Error initializing map:", error);
-    } finally {
-      setIsScriptLoading(false);
     }
   }
 

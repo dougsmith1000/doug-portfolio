@@ -5,17 +5,17 @@
     "lat": 34.0598,
     "lng": -84.2456,
     "logo": "rallyhere-logo.png",
-    "cityImage": "alph-bellona.png",
+    "cityImage": "alph-danger.jpg",
     "years": "Jun 2023-Present",
     "description": "Joined as Frontend Lead to create a developer portal for a white-labeled game management SaaS product. Architected and implemented the developer portal serving multiple development teams using React, TypeScript, and FastAPI, creating a foundational system that improved team productivity. Created automated tooling that transforms OpenAPI specifications into a data map for the rendering of UI components, streamlining development workflow and reducing manual updates. Implemented state management and caching strategies using React Query and Cloudflare, ensuring reliability in production."
   },
   "hiRez": {
     "name": "Hi-Rez Studios",
     "subname": null,
-    "lat": 34.0615,
-    "lng": 33.9304,
+    "lat": 34.0620,
+    "lng": -84.2513,
     "logo": "hirez-logo-v3.png",
-    "cityImage": "alph-danger.jpg",
+    "cityImage": "alph-bellona.png",
     "years": "Jan 2017-Jun 2023",
     "description": "I started as the Web Development Manager, and later promoted to Director of Web Development. Managed cross-functional team of 12 (developers, designers, producers, and artists) while maintaining hands-on involvement in technical architecture. I created foundational code elements and reusable component libraries that improved code quality and development velocity. Transformed legacy infrastructure into modern React-based architecture with caching strategies using NGINX and Cloudflare CDN. Implemented custom A/B testing framework with to work with Google Analytics, enabling data-driven product decisions. Led an initiative to streamline processes across 60-person publishing organization by interviewing 60+ team members to understand pain points. Managed cloud infrastructure on AWS and Azure, including load balancers, monitoring services, and automated deployment scripts. Proactively monitored production service levels and system performance, implementing improvements to maintain reliability."
   },

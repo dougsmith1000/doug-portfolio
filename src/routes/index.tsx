@@ -1,4 +1,4 @@
-import { createSignal, Show, lazy, For, createEffect } from "solid-js";
+import { createSignal, Show, lazy, For, createEffect, onMount } from "solid-js";
 import { isServer } from "solid-js/web";
 import Drawer from "../components/Drawer";
 import resumeData from "../config/resume.json";
@@ -15,7 +15,22 @@ export default function Index() {
   const [isTransitioning, setIsTransitioning] = createSignal(false);
   const [jobToShow, setJobToShow] = createSignal<string | null>(null);
   const [showCityImage, setShowCityImage] = createSignal(false);
-  const [dropMarker, setDropMarker] = createSignal(false);
+  const [isMobile, setIsMobile] = createSignal(false);
+  const [drawerCollapsed, setDrawerCollapsed] = createSignal(false);
+
+  // Detect if the device is mobile
+  onMount(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
+  });
 
   const handleResumeClick = (e: MouseEvent, position: "left" | "right") => {
     if (isServer) return;
@@ -32,6 +47,21 @@ export default function Index() {
       setTimeout(() => {
         setShowMap(true);
       }, 50);
+
+      // For mobile, auto-select first job and collapse drawer after a delay
+      if (isMobile()) {
+        setTimeout(() => {
+          const firstJobKey = Object.keys(resumeData)[0];
+          setSelectedJob(firstJobKey);
+          setJobToShow(firstJobKey);
+          setShowJobDetails(true);
+
+          setTimeout(() => {
+            setShowCityImage(true);
+            setDrawerCollapsed(true);
+          }, 300);
+        }, 800);
+      }
     });
   };
 
@@ -42,6 +72,7 @@ export default function Index() {
       setLeftDrawerOpen(false);
     } else {
       setRightDrawerOpen(false);
+      setDrawerCollapsed(false);
     }
 
     if (!leftDrawerOpen() && !rightDrawerOpen()) {
@@ -49,17 +80,18 @@ export default function Index() {
         setShowMap(false);
         setSelectedJob(null);
         setShowCityImage(false);
-        setDropMarker(false);
       }, 300);
     }
+  };
+
+  const expandDrawer = () => {
+    setDrawerCollapsed(false);
   };
 
   const handleJobSelect = (jobKey: string) => {
     if (isServer) return;
 
-    // Hide city image and reset marker immediately when changing jobs
     setShowCityImage(false);
-    setDropMarker(false);
 
     if (showJobDetails() && !isTransitioning()) {
       if (selectedJob() === jobKey) {
@@ -74,13 +106,9 @@ export default function Index() {
           setShowJobDetails(true);
           setIsTransitioning(false);
 
-          // Show city image after job details have appeared
           setTimeout(() => {
             setShowCityImage(true);
-
-            // We no longer need to manually trigger the marker drop
-            // as it's handled by the map component after animation
-          }, 400);
+          }, 200);
         }, 400);
       }
     } else {
@@ -88,13 +116,16 @@ export default function Index() {
       setJobToShow(jobKey);
       setShowJobDetails(true);
 
-      // Show city image after job details have appeared
       setTimeout(() => {
         setShowCityImage(true);
+      }, 200);
+    }
 
-        // We no longer need to manually trigger the marker drop
-        // as it's handled by the map component after animation
-      }, 400);
+    // Collapse drawer on mobile after selection
+    if (isMobile() && rightDrawerOpen()) {
+      setTimeout(() => {
+        setDrawerCollapsed(true);
+      }, 300);
     }
   };
 
@@ -102,20 +133,22 @@ export default function Index() {
     if (!rightDrawerOpen()) {
       setShowJobDetails(false);
       setShowCityImage(false);
-      setDropMarker(false);
+      setDrawerCollapsed(false);
     } else {
       const firstJobKey = Object.keys(resumeData)[0];
       setSelectedJob(firstJobKey);
       setJobToShow(firstJobKey);
       setShowJobDetails(true);
 
-      // Show city image after drawer is fully open
       setTimeout(() => {
         setShowCityImage(true);
-
-        // We no longer need to manually trigger the marker drop
-        // as it's handled by the map component after animation
-      }, 600);
+        // Auto-collapse on mobile after showing first job
+        if (isMobile()) {
+          setTimeout(() => {
+            setDrawerCollapsed(true);
+          }, 500);
+        }
+      }, 300);
     }
   });
 
@@ -129,6 +162,27 @@ export default function Index() {
     const data = selectedJobData();
     if (!data) return null;
     return { lat: data.lat, lng: data.lng };
+  };
+
+  // Navigation functions for job details
+  const navigateToNextJob = () => {
+    const jobKeys = Object.keys(resumeData);
+    const currentIndex = jobKeys.findIndex((key) => key === selectedJob());
+
+    if (currentIndex !== -1) {
+      const prevIndex = (currentIndex - 1 + jobKeys.length) % jobKeys.length;
+      handleJobSelect(jobKeys[prevIndex]);
+    }
+  };
+
+  const navigateToPreviousJob = () => {
+    const jobKeys = Object.keys(resumeData);
+    const currentIndex = jobKeys.findIndex((key) => key === selectedJob());
+
+    if (currentIndex !== -1) {
+      const nextIndex = (currentIndex + 1) % jobKeys.length;
+      handleJobSelect(jobKeys[nextIndex]);
+    }
   };
 
   return (
@@ -176,19 +230,30 @@ export default function Index() {
       </div>
 
       <div
-        class="fixed left-[200px] bottom-0 z-20 mx-auto max-w-md w-full transform transition-all duration-300 ease-out-back pointer-events-none"
+        class="fixed left-[150px] bottom-0 z-20 mx-auto max-w-md w-full transform pointer-events-none select-none transition-opacity"
+        style="padding: 100px; margin: -100px;"
         classList={{
-          "-translate-y-0": showCityImage(),
-          "translate-y-full": !showCityImage(),
+          "opacity-100": showCityImage(),
+          "opacity-0": !showCityImage(),
+          "left-[50px]": isMobile(),
         }}
       >
         <Show when={selectedJobData()?.cityImage}>
-          <div class="mr-6 ml-4 mt-6 shadow-lg relative pointer-events-auto">
-            <div class="relative z-10 bg-transparent overflow-hidden text-center">
+          <div
+            class="relative pointer-events-auto"
+            style="transform-origin: bottom left; overflow: visible;"
+            classList={{
+              "animate-rotateIn": showCityImage(),
+            }}
+          >
+            <div class="relative z-10 bg-transparent text-center">
               <img
                 src={`/cities/${selectedJobData()?.cityImage}`}
                 alt={`${selectedJobData()?.name} location`}
-                class="max-h-[600px]"
+                class="max-w-[600px] select-none rounded-md w-[26vw]"
+                classList={{
+                  "city-image-mobile": isMobile(),
+                }}
               />
             </div>
           </div>
@@ -196,7 +261,7 @@ export default function Index() {
       </div>
 
       <div
-        class="fixed left-0 top-1/8 z-20 max-w-md w-full transform transition-transform duration-400 ease-out-back pointer-events-none"
+        class="fixed left-0 top-1/8 z-20 max-w-md w-full transform transition-transform duration-400 ease-out-back pointer-events-none select-none"
         classList={{
           "translate-x-0": showJobDetails(),
           "-translate-x-full": !showJobDetails(),
@@ -224,6 +289,15 @@ export default function Index() {
                 {selectedJobData()?.description}
               </p>
 
+              <div class="flex justify-between mt-4">
+                <button class="nav-arrow" onClick={navigateToPreviousJob} title="Previous job">
+                  ←
+                </button>
+                <button class="nav-arrow" onClick={navigateToNextJob} title="Next job">
+                  →
+                </button>
+              </div>
+
               <button
                 class="absolute top-3 right-3 text-neutral-400 hover:text-white transition-colors"
                 onClick={() => setShowJobDetails(false)}
@@ -235,6 +309,13 @@ export default function Index() {
         </Show>
       </div>
 
+      {/* Collapsed drawer tab for mobile */}
+      <Show when={rightDrawerOpen() && drawerCollapsed() && isMobile()}>
+        <div class="drawer-tab" onClick={expandDrawer}>
+          <div class="drawer-tab-text">Résumé</div>
+        </div>
+      </Show>
+
       {/* <Show when={leftDrawerOpen()}>
         <Drawer position="left" isOpen={leftDrawerOpen()} onClose={() => closeDrawer("left")}>
           <h2 class="text-white font-roboto text-2xl">Left Drawer Content</h2>
@@ -243,7 +324,12 @@ export default function Index() {
       </Show> */}
 
       <Show when={rightDrawerOpen()}>
-        <Drawer position="right" isOpen={rightDrawerOpen()} onClose={() => closeDrawer("right")}>
+        <Drawer
+          position="right"
+          isOpen={rightDrawerOpen()}
+          onClose={() => closeDrawer("right")}
+          drawerWidth={drawerCollapsed() && isMobile() ? 0 : undefined}
+        >
           <h2 class="text-white font-playwrite text-2xl font-bold mb-8">L'histoire</h2>
 
           <div class="space-y-10 relative">

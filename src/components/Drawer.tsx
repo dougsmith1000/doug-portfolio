@@ -20,7 +20,6 @@ export default function Drawer(props: DrawerProps) {
   let animationFrame: number | null = null;
   let animationTimer: number | null = null;
 
-  // Skip browser-specific code on the server
   if (isServer) {
     return (
       <div
@@ -34,19 +33,20 @@ export default function Drawer(props: DrawerProps) {
 
   const calculateDrawerWidth = () => {
     const windowWidth = window.innerWidth;
-    const width = Math.min(windowWidth * 0.3, 800);
-    const minWidth = 320;
+    // For mobile, use a larger percentage of the screen
+    const isMobile = windowWidth < 768;
+    const width = isMobile ? Math.min(windowWidth * 0.85, 800) : Math.min(windowWidth * 0.3, 800);
+    const minWidth = isMobile ? 280 : 320;
     return Math.max(minWidth, width);
   };
 
-  // Debounced resize handler
   const handleResize = () => {
     if (resizeTimeout) {
       window.clearTimeout(resizeTimeout);
     }
 
     resizeTimeout = window.setTimeout(() => {
-      if (props.isOpen && !isDragging() && !isAnimating()) {
+      if (props.isOpen && !isDragging() && !isAnimating() && props.drawerWidth === undefined) {
         setDrawerWidth(calculateDrawerWidth());
       }
       resizeTimeout = null;
@@ -77,22 +77,16 @@ export default function Drawer(props: DrawerProps) {
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
-  // Animate drawer opening with performance.now() for precise timing
   const animateDrawerOpen = (targetWidth: number) => {
-    // Begin animation - prevents other animations from starting
     setIsAnimating(true);
 
-    // Get current time for animation
     const startTime = performance.now();
-    const duration = 400; // Match CSS var --drawer-open-time (in ms)
-    const startWidth = 1; // Start with 1px width instead of 0 to ensure it's immediately visible
+    const duration = 400;
+    const startWidth = 1;
 
-    // Set initial width
     setDrawerWidth(startWidth);
 
-    // Animation function
     const animate = (currentTime: number) => {
-      // Ensure at least one frame has passed to prevent immediate jumps
       if (currentTime === startTime) {
         animationFrame = requestAnimationFrame(animate);
         return;
@@ -101,27 +95,21 @@ export default function Drawer(props: DrawerProps) {
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
 
-      // Custom easing function with overshoot for a more dynamic feel
       const easeOutBack = (x: number): number => {
         const c1 = 1.70158;
         const c3 = c1 + 1;
         return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
       };
 
-      // Calculate current width with easing
       const currentWidth = startWidth + (targetWidth - startWidth) * easeOutBack(progress);
       setDrawerWidth(currentWidth);
 
-      // Continue animation if not complete
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
       } else {
-        // Clean up animation
         animationFrame = null;
-        // Ensure final width is exactly the target
         setDrawerWidth(targetWidth);
 
-        // Give a small buffer before allowing other animations
         animationTimer = window.setTimeout(() => {
           setIsAnimating(false);
           animationTimer = null;
@@ -129,31 +117,24 @@ export default function Drawer(props: DrawerProps) {
       }
     };
 
-    // Start animation
     animationFrame = requestAnimationFrame(animate);
   };
 
-  // Animate drawer closing with performance.now() for precise timing
   const animateDrawerClose = () => {
-    // Begin animation
     setIsAnimating(true);
 
-    // Get current time for animation
     const startTime = performance.now();
-    const duration = 300; // Slightly faster close animation
+    const duration = 300;
     const startWidth = drawerWidth();
 
-    // Animation function
     const animate = (currentTime: number) => {
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
 
-      // Simple ease-out function for a smooth exit
       const easeOutQuart = (x: number): number => {
         return 1 - Math.pow(1 - x, 4);
       };
 
-      // Calculate current width with easing
       const currentWidth = startWidth - startWidth * easeOutQuart(progress);
       setDrawerWidth(currentWidth);
 
@@ -196,15 +177,54 @@ export default function Drawer(props: DrawerProps) {
   });
 
   createEffect(() => {
-    if (props.isOpen && !isAnimating() && drawerWidth() === 0) {
+    if (props.isOpen && !isAnimating() && drawerWidth() === 0 && props.drawerWidth === undefined) {
       const targetWidth = calculateDrawerWidth();
       animateDrawerOpen(targetWidth);
     }
   });
 
   createEffect(() => {
-    if (props.drawerWidth !== undefined && !isAnimating() && !isDragging()) {
-      setDrawerWidth(props.drawerWidth);
+    if (props.drawerWidth !== undefined && !isAnimating()) {
+      if (props.drawerWidth === 0) {
+        // If we're collapsing from a non-zero width, animate it
+        if (drawerWidth() > 0) {
+          const startTime = performance.now();
+          const duration = 300;
+          const startWidth = drawerWidth();
+
+          const animate = (currentTime: number) => {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+
+            const easeOutQuart = (x: number): number => {
+              return 1 - Math.pow(1 - x, 4);
+            };
+
+            const currentWidth = startWidth - startWidth * easeOutQuart(progress);
+            setDrawerWidth(currentWidth);
+
+            if (progress < 1) {
+              animationFrame = requestAnimationFrame(animate);
+            } else {
+              animationFrame = null;
+              setDrawerWidth(0);
+              setIsAnimating(false);
+            }
+          };
+
+          setIsAnimating(true);
+          animationFrame = requestAnimationFrame(animate);
+        } else {
+          setDrawerWidth(0);
+        }
+      } else {
+        // If we're expanding from zero, animate it
+        if (drawerWidth() === 0) {
+          animateDrawerOpen(props.drawerWidth);
+        } else {
+          setDrawerWidth(props.drawerWidth);
+        }
+      }
     }
   });
 
@@ -212,30 +232,30 @@ export default function Drawer(props: DrawerProps) {
     <div
       class={`absolute top-0 h-full bg-neutral-900/90 text-white shadow-[0_0_12px_rgba(0,0,0,0.3)] z-20 ${
         props.position === "left" ? "left-0" : "right-0"
-      }`}
+      } ${isDragging() ? "select-none" : ""}`}
       style={{
         width: `${drawerWidth()}px`,
         transition: isDragging() ? "none" : undefined,
       }}
     >
       <div
-        class={`absolute h-screen w-1.5 bg-neutral-900 cursor-ew-resize ${
+        class={`absolute h-screen w-1.5 bg-neutral-900 cursor-ew-resize select-none ${
           props.position === "left" ? "right-[-2px]" : "left-[-2px]"
         }`}
       >
         <div
-          class="absolute inset-0 drawer-handle cursor-ew-resize hover:brightness-125"
+          class="absolute inset-0 drawer-handle cursor-ew-resize hover:brightness-125 select-none"
           onMouseDown={handleMouseDown}
         />
       </div>
       <button
         onClick={localClose}
-        class="absolute top-4 right-4 p-2 bg-transparent border-none cursor-pointer text-neutral-400"
+        class="absolute top-4 right-4 p-2 bg-transparent border-none cursor-pointer text-neutral-400 select-none"
       >
         ✕
       </button>
       <div class="h-full overflow-auto">
-        <div class="p-8 min-w-[320px]">{props.children}</div>
+        <div class="p-8 min-w-[280px]">{props.children}</div>
       </div>
     </div>
   );
