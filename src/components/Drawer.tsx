@@ -35,7 +35,6 @@ export default function Drawer(props: DrawerProps) {
 
   const calculateDrawerWidth = () => {
     const windowWidth = window.innerWidth;
-    // For mobile, use a larger percentage of the screen
     const isMobile = windowWidth < 768;
     const width = isMobile ? Math.min(windowWidth * 0.85, 800) : Math.min(windowWidth * 0.3, 800);
     const minWidth = isMobile ? 280 : 320;
@@ -166,7 +165,6 @@ export default function Drawer(props: DrawerProps) {
     document.removeEventListener("mouseup", handleMouseUp);
     window.removeEventListener("resize", handleResize);
 
-    // Clean up animation resources
     if (animationFrame) {
       cancelAnimationFrame(animationFrame);
     }
@@ -188,7 +186,6 @@ export default function Drawer(props: DrawerProps) {
   createEffect(() => {
     if (props.drawerWidth !== undefined && !isAnimating()) {
       if (props.drawerWidth === 0) {
-        // If we're collapsing from a non-zero width, animate it
         if (drawerWidth() > 0) {
           const startTime = performance.now();
           const duration = 300;
@@ -220,7 +217,6 @@ export default function Drawer(props: DrawerProps) {
           setDrawerWidth(0);
         }
       } else {
-        // If we're expanding from zero, animate it
         if (drawerWidth() === 0) {
           animateDrawerOpen(props.drawerWidth);
         } else {
