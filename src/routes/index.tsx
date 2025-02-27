@@ -200,28 +200,46 @@ export default function Index() {
         <h3 class="text-5xl mb-8 text-yellow-100 font-playwrite [text-shadow:0_2px_4px_rgba(0,0,0,0.9)]">
           Hello, I'm Doug.
         </h3>
-        <p class="text-lg font-lato">I am a software engineer and manager.</p>
-        <p class="text-lg mb-3 font-lato">
-          I made this site with SolidStart, the Google Maps API, and Tailwind.<sup>*</sup>
-        </p>
-        {/* <p class="text-xs mb-6 font-lato">
-          I'm also writing a service in Go that I haven't put up yet that geolocates your IP address, puts you on the
-          map, and shows you the 0-2 other people looking at this site through a websocket.
-        </p> */}
         <div class="flex gap-4 flex-col">
           <button
             onClick={(e) => handleResumeClick(e, "right")}
             class="btn-shimmer px-8 py-3 text-lg bg-[#0077c2] text-white rounded cursor-pointer relative 
                 before:absolute before:inset-0 before:border-2 before:border-slate-400 before:opacity-0 
                 before:scale-[1.15] hover:before:scale-100 hover:before:opacity-100 
-                before:transition-all before:duration-300 before:ease-out before:rounded font-playwrite font-bold mb-5"
+                before:transition-all before:duration-300 before:ease-out before:rounded font-playwrite font-bold mb-7"
           >
             Résumé
           </button>
         </div>
-        <p class="text-xs mb-6 font-lato">
-          <sup>*</sup>All the animations and tough parts are pure CSS
-        </p>
+        <div class="group relative mb-6 cursor-pointer self-start mx-auto w-full">
+          <p class="text-lg font-lato border-b border-[#00ff80]/40 inline-block transition-all duration-300 group-hover:border-[#00ff80] group-hover:text-[#00ff80]/90">
+            I am a software engineer and manager.
+          </p>
+          <div class="absolute left-0 right-0 grid grid-rows-[1fr] group-hover:grid-rows-[1fr] transition-all duration-500 mt-0 group-hover:mt-3 text-center max-auto">
+            <div class="overflow-hidden">
+              <div class="text-sm font-lato text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 mx-auto text-center max-w-[500px]">
+                <p class="mb-2">
+                  For those of you who like industry words, I'm a versatile technology leader with experience in front
+                  and back-end web development, project management, and team leadership.
+                </p>
+                <p class="mb-2">
+                  I’ve managed development teams, streamlined marketing processes, and led engineering efforts, most
+                  recently serving as the UX and Development Lead for a Developer Portal at a startup focused on live
+                  service and multiplayer game backends.
+                </p>
+                <p class="mb-2">
+                  I'm looking for opportunities where I can leverage my blend of technical expertise and strategic
+                  oversight to drive digital solutions, optimize workflows, and lead cross-functional teams. If that
+                  sounds like something you’re interested in, email me or take a look at my resume.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <p class="text-xs mb-6 font-lato">
+          I'm also writing a service in Go that I haven't put up yet that geolocates your IP address, puts you on the
+          map, and shows you the 0-2 other people looking at this site through a websocket.
+        </p> */}
       </div>
 
       <div

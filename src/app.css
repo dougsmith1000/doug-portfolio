@@ -114,6 +114,7 @@
 }
 
 .main-content {
+  text-align: center;
   transition: opacity 0.15s ease;
 }
 
