@@ -318,9 +318,9 @@ export default function Index() {
                      shadow-[0_0_10px_rgba(0,255,128,0.3),0_0_20px_rgba(0,255,128,0.2)] 
                      transition-all duration-300 hover:shadow-[0_0_12px_rgba(0,255,128,0.4),0_0_24px_rgba(0,255,128,0.3)]"
             >
-              <h3 class="text-xl font-playwrite text-white mb-2">{selectedJobData()?.name}</h3>
+              <h3 class="text-xl font-ibm-plex-mono text-white mb-2">{selectedJobData()?.name}</h3>
               {selectedJobData()?.subname && (
-                <h4 class="text-sm font-playwrite text-white mb-2">{selectedJobData()?.subname}</h4>
+                <h4 class="text-sm font-ibm-plex-mono text-white mb-2">{selectedJobData()?.subname}</h4>
               )}
               <div
                 class="inline-block bg-[#1a1a1a] border border-[#00ff80]/60 px-3 py-1 rounded mb-4
@@ -328,9 +328,10 @@ export default function Index() {
               >
                 {selectedJobData()?.years}
               </div>
-              <p class="text-white/80 font-lato text-sm leading-relaxed job-description-panel">
-                {selectedJobData()?.description}
-              </p>
+              <div
+                class="text-white/80 font-ibm-plex-mono text-sm leading-relaxed job-description-panel"
+                innerHTML={selectedJobData()?.description}
+              />
 
               <div class="flex justify-between mt-4">
                 <button class="nav-arrow" onClick={navigateToPreviousJob} title="Previous job">
@@ -389,7 +390,7 @@ export default function Index() {
           drawerWidth={drawerCollapsed() && isMobile() ? 0 : undefined}
           isCollapsed={drawerCollapsed()}
         >
-          <h2 class="text-white font-playwrite text-2xl font-bold mb-8">L'histoire</h2>
+          <h2 class="text-white font-ibm-plex-mono text-2xl font-bold mb-8">L'histoire</h2>
 
           <div class="space-y-10 relative">
             <For each={Object.entries(resumeData)}>
@@ -413,8 +414,8 @@ export default function Index() {
                     />
                   </div>
                   <div class="relative z-10 p-4">
-                    <h3 class="text-xl font-arsenal text-white mb-1 bold">{item.name}</h3>
-                    {item.subname && <h4 class="text-xs font-playwrite text-white mb-3">{item.subname}</h4>}
+                    <h3 class="text-xl font-ibm-plex-mono text-white mb-1 bold">{item.name}</h3>
+                    {item.subname && <h4 class="text-xs font-ibm-plex-mono text-white mb-3">{item.subname}</h4>}
                     <div
                       class="inline-block bg-[#1a1a1a] px-3 py-1 rounded
                         font-lato text-sm text-[#00ff80] font-medium tracking-wide

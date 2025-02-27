@@ -3,7 +3,7 @@ import { createSignal, onCleanup, createEffect, Accessor } from "solid-js";
 import { Loader } from "@googlemaps/js-api-loader";
 import { isServer } from "solid-js/web";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyCyQ5Of2emlPznbtusylADSFxErcMPjjRI";
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 type GoogleMap = google.maps.Map;
 type LatLngLiteral = google.maps.LatLngLiteral;
