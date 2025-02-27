@@ -181,7 +181,7 @@ export default function Index() {
   };
 
   return (
-    <div class="h-screen w-screen pt-48 bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-y-auto overflow-x-hidden">
+    <div class="h-screen w-screen pt-36 bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-y-auto overflow-x-hidden">
       <div class="absolute inset-0 z-0">
         <Show when={!isServer && showMap()}>
           <div class="w-full h-full map-fade-in">
