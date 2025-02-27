@@ -17,6 +17,7 @@ export default function Index() {
   const [showCityImage, setShowCityImage] = createSignal(false);
   const [isMobile, setIsMobile] = createSignal(false);
   const [drawerCollapsed, setDrawerCollapsed] = createSignal(false);
+  const [bioExpanded, setBioExpanded] = createSignal(false);
 
   onMount(() => {
     const checkMobile = () => {
@@ -26,8 +27,16 @@ export default function Index() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
+    document.addEventListener("click", (e) => {
+      const bioElement = document.getElementById("bio-section");
+      if (bioExpanded() && bioElement && !bioElement.contains(e.target as Node)) {
+        setBioExpanded(false);
+      }
+    });
+
     return () => {
       window.removeEventListener("resize", checkMobile);
+      document.removeEventListener("click", () => {});
     };
   });
 
@@ -181,7 +190,7 @@ export default function Index() {
   };
 
   return (
-    <div class="h-screen w-screen pt-36 bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-y-auto overflow-x-hidden">
+    <div class="h-screen w-screen pt-42 bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-y-auto overflow-x-hidden">
       <div class="absolute inset-0 z-0">
         <Show when={!isServer && showMap()}>
           <div class="w-full h-full map-fade-in">
@@ -211,26 +220,39 @@ export default function Index() {
             Résumé
           </button>
         </div>
-        <div class="group relative mb-6 cursor-pointer mx-auto w-full">
-          <p class="text-lg font-lato border-b border-[#00ff80]/40 inline-block transition-all duration-300 group-hover:border-[#00ff80] group-hover:text-[#00ff80]/90">
+        <div id="bio-section" class="relative mb-6 mx-auto w-full">
+          <p
+            onClick={(e) => {
+              e.stopPropagation();
+              setBioExpanded(!bioExpanded());
+            }}
+            class="text-lg font-lato border-b border-[#00ff80]/40 inline-block transition-all duration-300 cursor-pointer"
+            classList={{ "border-[#00ff80] text-[#00ff80]/90": bioExpanded() }}
+          >
             I am a software engineer and manager.
           </p>
-          <div class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 mt-0 group-hover:mt-3 text-center max-auto">
+          <div
+            class="grid grid-rows-[0fr] transition-all duration-500 mt-0 text-center"
+            classList={{ "grid-rows-[1fr] mt-3": bioExpanded() }}
+          >
             <div class="overflow-hidden">
-              <div class="text-sm font-lato text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 mx-auto text-center max-w-[500px]">
+              <div
+                class="text-sm font-lato text-white/80 opacity-0 transition-opacity duration-500 delay-100 mx-auto text-center max-w-[500px]"
+                classList={{ "opacity-100": bioExpanded() }}
+              >
                 <p class="mb-2">
                   For those of you who like industry words, I'm a versatile technology leader with experience in front
                   and back-end web development, project management, and team leadership.
                 </p>
                 <p class="mb-2">
-                  I’ve managed development teams, streamlined marketing processes, and led engineering efforts, most
+                  I've managed development teams, streamlined marketing processes, and led engineering efforts, most
                   recently serving as the UX and Development Lead for a Developer Portal at a startup focused on live
                   service and multiplayer game backends.
                 </p>
                 <p class="mb-2">
                   I'm looking for opportunities where I can leverage my blend of technical expertise and strategic
                   oversight to drive digital solutions, optimize workflows, and lead cross-functional teams. If that
-                  sounds like something you’re interested in, email me or take a look at my resume.
+                  sounds like something you're interested in, email me or take a look at my resume.
                 </p>
               </div>
             </div>
