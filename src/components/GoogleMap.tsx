@@ -5,7 +5,6 @@ import { isServer } from "solid-js/web";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyCyQ5Of2emlPznbtusylADSFxErcMPjjRI";
 
-// Define consistent types for Google Maps objects
 type GoogleMap = google.maps.Map;
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
@@ -19,9 +18,7 @@ interface GoogleMapProps {
   markerPosition?: Accessor<LatLngLiteral | null>;
 }
 
-// Location coordinates
 const START_LOCATION: LatLngLiteral = { lat: 41.0437, lng: -74.2156 };
-const DEFAULT_END_LOCATION: LatLngLiteral = { lat: 34.0598, lng: -84.2456 };
 
 const US_WIDTH = 58;
 const ONE_THIRD_US_WIDTH = US_WIDTH / 3;
@@ -309,12 +306,16 @@ export default function GoogleMap(props: GoogleMapProps) {
     setHasAnimated(true);
 
     try {
-      let destination = DEFAULT_END_LOCATION;
+      let destination: LatLngLiteral;
       if (props.markerPosition) {
         const markerPos = props.markerPosition();
         if (markerPos) {
           destination = markerPos;
+        } else {
+          destination = START_LOCATION;
         }
+      } else {
+        destination = START_LOCATION;
       }
 
       setLastAnimatedPosition(destination);
@@ -322,7 +323,6 @@ export default function GoogleMap(props: GoogleMapProps) {
       const distance = calculateDistance(startLocation(), destination);
       const isLongDistance = distance > ONE_THIRD_US_WIDTH;
 
-      // Define zoom levels
       const maxZoom = 16;
       const minZoom = isLongDistance ? 5 : 6;
 
@@ -350,34 +350,26 @@ export default function GoogleMap(props: GoogleMapProps) {
 
       await smoothZoom(currentMap, minZoom, midZoom);
 
-      // Step 2: Now show both cities before panning
       const bounds = new google.maps.LatLngBounds();
       bounds.extend(new google.maps.LatLng(startLocation().lat, startLocation().lng));
       bounds.extend(new google.maps.LatLng(destination.lat, destination.lng));
 
-      // Fit bounds to show both cities
       currentMap.fitBounds(bounds, { top: 100, right: 100, bottom: 100, left: 100 });
 
-      // Pan to the destination
       currentMap.panTo(destination);
 
-      // Wait for the pan to complete
       await new Promise<void>((resolve) => setTimeout(resolve, 1100));
 
-      // Step 3: Apply road styles for better detail
       currentMap.setOptions({
         styles: ROAD_VISIBLE_STYLES,
       });
 
-      // Step 4: Zoom in smoothly to maximum zoom level
       await smoothZoom(currentMap, maxZoom, minZoom);
 
-      // Re-enable user interaction
       currentMap.setOptions({
         gestureHandling: "cooperative",
       });
 
-      // Drop the marker after the initial animation is complete
       dropMarkerOnMap(destination);
 
       setIsAnimating(false);
@@ -391,7 +383,6 @@ export default function GoogleMap(props: GoogleMapProps) {
 
   createEffect(() => {
     if (map() && !isAnimating() && !hasAnimated() && !isServer) {
-      // Handle the async function
       startAnimation().catch(() => {
         setIsAnimating(false);
         setInitialAnimationComplete(true);
@@ -407,7 +398,6 @@ export default function GoogleMap(props: GoogleMapProps) {
       google.maps.event.clearInstanceListeners(currentMap);
     }
 
-    // Clean up marker
     const marker = currentMarker();
     if (marker) {
       marker.setMap(null);

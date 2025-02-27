@@ -1,9 +1,9 @@
 import { createSignal, Show, lazy, For, createEffect, onMount } from "solid-js";
 import { isServer } from "solid-js/web";
-import Drawer from "../components/Drawer";
-import resumeData from "../config/resume.json";
+import Drawer from "~/components/Drawer";
+import resumeData from "~/config/resume.json";
 
-const GoogleMap = lazy(() => import("../components/GoogleMap"));
+const GoogleMap = lazy(() => import("~/components/GoogleMap"));
 
 export default function Index() {
   const [leftDrawerOpen, setLeftDrawerOpen] = createSignal(false);
@@ -272,7 +272,7 @@ export default function Index() {
             >
               <h3 class="text-xl font-playwrite text-white mb-2">{selectedJobData()?.name}</h3>
               {selectedJobData()?.subname && (
-                <h4 class="text-lg font-playwrite text-white mb-2">{selectedJobData()?.subname}</h4>
+                <h4 class="text-sm font-playwrite text-white mb-2">{selectedJobData()?.subname}</h4>
               )}
               <div
                 class="inline-block bg-[#1a1a1a] border border-[#00ff80]/60 px-3 py-1 rounded mb-4
