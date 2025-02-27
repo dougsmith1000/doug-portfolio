@@ -785,3 +785,13 @@ button,
 .resume-list li:nth-child(4) { animation-delay: 0.4s; }
 .resume-list li:nth-child(5) { animation-delay: 0.5s; }
 .resume-list li:nth-child(6) { animation-delay: 0.6s; }
+
+/* Social icon hover effects */
+.links a svg {
+  transition: transform 0.2s ease, stroke 0.2s ease;
+}
+
+.links a:hover svg {
+  transform: scale(1.15);
+  stroke: rgba(0, 255, 128, 1);
+}
