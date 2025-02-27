@@ -1,32 +1,42 @@
-# SolidStart
+# Doug's Portfolio Site
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+My site to show off some basic things I'm capable of doing.
 
-## Creating a project
+## What Makes This Cool
+
+- **Interactive Resume**: Rather than a static page, I've built an interactive experience that plots my career journey on a map
+- **Pure CSS Animations**: All the fancy transitions and animations are done with pure CSS - no animation libraries
+- **Responsive Design**: Works on both desktop and mobile with a collapsible drawer for smaller screens
+- **Modern Stack**: Built with SolidStart (SolidJS framework), TypeScript, and Tailwind CSS, hosted on Cloudlfare
+
+## Technical Highlights
+
+- Custom drawer component with resize handle and smooth animations
+- Google Maps integration showing locations of past employment
+- Responsive design with mobile-specific UI elements
+- CSS-based animations for transitions between states
+- Dark mode UI with neon accents
+
+## Running Locally
 
 ```bash
-# create a new project in the current directory
-npm init solid@latest
+# Install dependencies
+pnpm install
 
-# create a new project in my-app
-npm init solid@latest my-app
+# Start the development server
+pnpm dev
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Building for Production
 
 ```bash
-npm run dev
+# Build the site
+pnpm build
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# Preview the production build
+pnpm start
 ```
 
-## Building
+## Future Plans
 
-Solid apps are built with _presets_, which optimise your project for deployment to different environments.
-
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different preset, add it to the `devDependencies` in `package.json` and specify in your `app.config.js`.
-
-## This project was created with the [Solid CLI](https://solid-cli.netlify.app)
+I'm working on a Go service that will geolocate visitors' IP addresses and show them on the map in real-time through websockets. Stay tuned for that update!

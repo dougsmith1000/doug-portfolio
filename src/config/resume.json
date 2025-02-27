@@ -5,9 +5,10 @@
     "lat": 34.0598,
     "lng": -84.2456,
     "logo": "rallyhere-logo.png",
+    "darkLogo": false,
     "cityImage": "alph-danger.jpg",
     "years": "Jun 2023-Present",
-    "description": "Joined as Frontend Lead to create a developer portal for a white-labeled game management SaaS product. Architected and implemented the developer portal serving multiple development teams using React, TypeScript, and FastAPI, creating a foundational system that improved team productivity. Created automated tooling that transforms OpenAPI specifications into a data map for the rendering of UI components, streamlining development workflow and reducing manual updates. Implemented state management and caching strategies using React Query and Cloudflare, ensuring reliability in production."
+    "description": "I joined as Frontend Lead to create a developer portal for a white-labeled game management SaaS product. Architected and implemented the developer portal serving multiple development teams using React, TypeScript, and FastAPI, creating a foundational system that improved team productivity. Created automated tooling that transforms OpenAPI specifications into a data map for the rendering of UI components, streamlining development workflow and reducing manual updates. Implemented state management and caching strategies using React Query and Cloudflare, ensuring reliability in production."
   },
   "hiRez": {
     "name": "Hi-Rez Studios",
@@ -15,19 +16,21 @@
     "lat": 34.0620,
     "lng": -84.2513,
     "logo": "hirez-logo-v3.png",
+    "darkLogo": false,
     "cityImage": "alph-bellona.png",
     "years": "Jan 2017-Jun 2023",
-    "description": "I started as the Web Development Manager, and later promoted to Director of Web Development. Managed cross-functional team of 12 (developers, designers, producers, and artists) while maintaining hands-on involvement in technical architecture. I created foundational code elements and reusable component libraries that improved code quality and development velocity. Transformed legacy infrastructure into modern React-based architecture with caching strategies using NGINX and Cloudflare CDN. Implemented custom A/B testing framework with to work with Google Analytics, enabling data-driven product decisions. Led an initiative to streamline processes across 60-person publishing organization by interviewing 60+ team members to understand pain points. Managed cloud infrastructure on AWS and Azure, including load balancers, monitoring services, and automated deployment scripts. Proactively monitored production service levels and system performance, implementing improvements to maintain reliability."
+    "description": "I started as the Web Development Manager, and later promoted to Director of Web Development. Managed cross-functional team of 12 (developers, designers, producers, and artists) while maintaining hands-on involvement in technical architecture. I created foundational code elements and reusable component libraries that improved code quality and development velocity. Transformed legacy infrastructure into modern React-based architecture with caching strategies using NGINX and Cloudflare CDN. Implemented custom A/B testing framework with to work with Google Analytics. I led an initiative to streamline processes across 60-person publishing organization by interviewing every team member to understand pain points. Managed cloud infrastructure on AWS and Azure, including load balancers, monitoring services, and automated deployment scripts. Proactively monitored production service levels and system performance, implementing improvements to maintain reliability."
   },
   "freelance": {
-    "name": "Gallagher Design, Razorfish",
-    "subname": null,
+    "name": "Consultant",
+    "subname": "with Gallagher Design, Razorfish",
     "lat": 33.7373,
     "lng": -84.3637,
     "logo": "gpt-logo.webp",
+    "darkLogo": false,
     "cityImage": "atl-pray.png",
     "years": "2013-2016",
-    "description": "Logo courtesy of a perfect ChatGPT one-shot prompt. I worked as a Freelance Developer on large-scale client projects for major companies like AT&T and Google using modern frontend technologies. Project managed and developed complex interactive solutions while creating technical specifications and development standards. Notable project included leading development of real-time interactive exhibits for Google Partner Plex Installation using AngularJS. Focused on delivering high-quality solutions while managing both the technical implementation and project management aspects of complex digital projects."
+    "description": "The logo on the nav is courtesy of a perfect ChatGPT one-shot prompt. I worked as a Freelance Developer on large-scale client projects for major companies like AT&T and Google using modern frontend technologies. Project managed and developed complex interactive solutions while creating technical specifications and development standards. Notable project included leading development of real-time interactive exhibits for Google Partner Plex Installation using AngularJS. Focused on delivering high-quality solutions while managing both the technical implementation and project management aspects of complex digital projects."
   },
   "frogDesign": {
     "name": "frog Design",
@@ -35,9 +38,10 @@
     "lat": 40.7266,
     "lng": -74.0075,
     "logo": "frog-logo.png",
+    "darkLogo": false,
     "cityImage": "ny-frog.png",
     "years": "2011-2012",
-    "description": "As Senior Program Manager, led design and specification of developer sandbox for American Express' SERVE payment platform, collaborating with UX team to create intuitive developer sandbox environments. Created proposals, estimates, budgets, schedules, and functional specs to effectively communicate a project's business, technical, and design scope for each project. Focused on bridging the gap between design, technology, and business requirements to deliver innovative digital solutions."
+    "description": "As Senior Program Manager, I led design and specification of developer sandbox for American Express' SERVE payment platform, collaborating with UX team to create intuitive developer sandbox environments. Created proposals, estimates, budgets, schedules, and functional specs to effectively communicate a project's business, technical, and design scope for each project. Focused on bridging the gap between design, technology, and business requirements to deliver innovative digital solutions."
   },
   "nyt": {
     "name": "The New York Times",
@@ -45,9 +49,10 @@
     "lat": 40.7564,
     "lng": -73.9913,
     "logo": "nyt-logo.png",
+    "darkLogo": true,
     "cityImage": "ny-carrie-2.png",
     "years": "2009-2011",
-    "description": "As Interactive Production Manager in Creative Services, managed development infrastructure decisions across multiple technical platforms. Led technical implementation of multiple consumer-facing digital products while serving as technical liaison between Creative Services and engineering teams, translating business requirements into technical specifications. Drove cross-team collaboration to deliver high-quality digital experiences for one of the world's most prestigious media organizations."
+    "description": "As Interactive Production Manager in Creative Services, managed development infrastructure decisions across multiple technical platforms. I led the technical implementations of multiple consumer-facing digital products while serving as technical liaison between Creative Services and engineering teams, translating business requirements into technical specifications. Drove cross-team collaboration to deliver high-quality digital experiences for one of the world's most prestigious media organizations."
   },
   "schematic": {
     "name": "Schematic",
@@ -55,9 +60,10 @@
     "lat": 40.7343,
     "lng": -73.9918,
     "logo": "schematic-logo.png",
+    "darkLogo": true,
     "cityImage": "ny-niko.png",
     "years": "2007-2009",
-    "description": "As Project Manager, led development of NBC Olympics Silverlight Video Player, coordinating between multiple, distributed technical teams and stakeholders. Established development standards and processes for Reuters Innovation Center platform. Managed technical implementation of Panasonic Viera Cast interface, focusing on developer workflow optimization. Created standardized process for technical documentation and handoff between development teams."
+    "description": "As Project Manager, I managed the development of NBC Olympics Silverlight Video Player, coordinating between multiple, distributed technical teams and stakeholders. Established development standards and processes for Reuters Innovation Center platform. Managed technical implementation of Panasonic Viera Cast interface, focusing on developer workflow optimization. Created standardized process for technical documentation and handoff between development teams."
   },
   "previous": {
     "name": "Previous Experience",
@@ -65,8 +71,9 @@
     "lat": 42.3483,
     "lng": -71.0874,
     "logo": "tbg-logo.png",
+    "darkLogo": true,
     "cityImage": "boston.webp",
     "years": "2004-2007",
-    "description": "I held various project management and production roles at prominent digital agencies including LBi (acquired by Digitas), POKE NY (defunct), BEAM Interactive (now Merge I think?), and The Barbarian Group (now just 'barbarian'). Starting as Associate Producer and advancing to Senior Project Manager, managed diverse digital projects while developing expertise in technical project management, client communication, and cross-functional team leadership. Graduated from Tufts University in 2004 with a Bachelor of Arts in Economics and a Minor in English. Became a Certified Scrum Master in 2008."
+    "description": "I held various project management and production roles at prominent digital agencies including LBi (acquired by Digitas), POKE NY (defunct), BEAM Interactive (now Merge I think?), and The Barbarian Group (now just 'barbarian' I think). Starting as Associate Producer and advancing to Senior Project Manager, managed diverse digital projects while developing expertise in technical project management, client communication, and cross-functional team leadership. Graduated from Tufts University in 2004 with a BA in Economics and a Minor in English and became a Certified Scrum Master in 2008."
   }
 }

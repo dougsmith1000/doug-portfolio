@@ -583,7 +583,7 @@ button,
   );
   color: rgba(0, 0, 0, 0.8);
   padding: 1rem 0.5rem;
-  border-radius: 0.5rem 0 0 0.5rem;
+  border-radius: 0.3rem 0 0 0.3rem;
   cursor: pointer;
   box-shadow: var(--neon-glow-1), var(--neon-glow-2);
   z-index: 30;
@@ -601,10 +601,6 @@ button,
   box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
 }
 
-.drawer-tab-text {
-  transform: rotate(90deg);
-  white-space: nowrap;
-  font-family: var(--font-playwrite);
-  font-weight: bold;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+.filter-invert {
+  filter: invert(1) brightness(1.75);
 }

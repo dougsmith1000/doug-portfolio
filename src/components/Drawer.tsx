@@ -1,5 +1,6 @@
 import { createSignal, JSX, onCleanup, createEffect, onMount } from "solid-js";
 import { isServer } from "solid-js/web";
+import { Show } from "solid-js";
 
 interface DrawerProps {
   position: "left" | "right";
@@ -7,6 +8,7 @@ interface DrawerProps {
   onClose: () => void;
   children: JSX.Element;
   drawerWidth?: number;
+  isCollapsed?: boolean;
 }
 
 export default function Drawer(props: DrawerProps) {
@@ -248,12 +250,14 @@ export default function Drawer(props: DrawerProps) {
           onMouseDown={handleMouseDown}
         />
       </div>
-      <button
-        onClick={localClose}
-        class="absolute top-4 right-4 p-2 bg-transparent border-none cursor-pointer text-neutral-400 select-none"
-      >
-        ✕
-      </button>
+      <Show when={!props.isCollapsed}>
+        <button
+          onClick={localClose}
+          class="absolute top-4 right-4 p-2 bg-transparent border-none cursor-pointer text-neutral-400 select-none"
+        >
+          ✕
+        </button>
+      </Show>
       <div class="h-full overflow-auto">
         <div class="p-8 min-w-[280px]">{props.children}</div>
       </div>
