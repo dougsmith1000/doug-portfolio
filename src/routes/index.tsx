@@ -181,7 +181,7 @@ export default function Index() {
   };
 
   return (
-    <div class="h-screen w-screen flex bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-hidden">
+    <div class="h-screen w-screen pt-48 bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-y-auto overflow-x-hidden">
       <div class="absolute inset-0 z-0">
         <Show when={!isServer && showMap()}>
           <div class="w-full h-full map-fade-in">
@@ -191,7 +191,7 @@ export default function Index() {
       </div>
       <div class="absolute inset-0 z-[5] pointer-events-none bg-green-950/80" />
       <div
-        class="main-content relative z-10 flex flex-col items-center justify-center w-full max-w-2xl p-8 mx-auto text-center"
+        class="main-content relative z-10 w-full max-w-2xl p-8 mx-auto text-center"
         classList={{
           "content-fade-out pointer-events-none": showMap() && hasAnimated(),
           "content-fade-in": !showMap() && hasAnimated(),
@@ -200,7 +200,7 @@ export default function Index() {
         <h3 class="text-5xl mb-8 text-yellow-100 font-playwrite [text-shadow:0_2px_4px_rgba(0,0,0,0.9)]">
           Hello, I'm Doug.
         </h3>
-        <div class="flex gap-4 flex-col">
+        <div class="max-w-[300px] mx-auto">
           <button
             onClick={(e) => handleResumeClick(e, "right")}
             class="btn-shimmer px-8 py-3 text-lg bg-[#0077c2] text-white rounded cursor-pointer relative 
@@ -211,11 +211,11 @@ export default function Index() {
             Résumé
           </button>
         </div>
-        <div class="group relative mb-6 cursor-pointer self-start mx-auto w-full">
+        <div class="group relative mb-6 cursor-pointer mx-auto w-full">
           <p class="text-lg font-lato border-b border-[#00ff80]/40 inline-block transition-all duration-300 group-hover:border-[#00ff80] group-hover:text-[#00ff80]/90">
             I am a software engineer and manager.
           </p>
-          <div class="absolute left-0 right-0 grid grid-rows-[1fr] group-hover:grid-rows-[1fr] transition-all duration-500 mt-0 group-hover:mt-3 text-center max-auto">
+          <div class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 mt-0 group-hover:mt-3 text-center max-auto">
             <div class="overflow-hidden">
               <div class="text-sm font-lato text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 mx-auto text-center max-w-[500px]">
                 <p class="mb-2">
