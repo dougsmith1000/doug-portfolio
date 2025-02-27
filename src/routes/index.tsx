@@ -190,7 +190,12 @@ export default function Index() {
   };
 
   return (
-    <div class="h-screen w-screen pt-42 bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-y-auto overflow-x-hidden">
+    <div
+      class="h-screen w-screen pt-42 bg-gradient-to-br from-green-950/10 to-green-900/10 relative overflow-y-auto overflow-x-hidden"
+      classList={{
+        "crt-effect": !isServer && showMap(),
+      }}
+    >
       <div class="absolute inset-0 z-0">
         <Show when={!isServer && showMap()}>
           <div class="w-full h-full map-fade-in">
@@ -199,6 +204,9 @@ export default function Index() {
         </Show>
       </div>
       <div class="absolute inset-0 z-[5] pointer-events-none bg-green-950/80" />
+      <Show when={!isServer && showMap()}>
+        <div class="scanlines" />
+      </Show>
       <div
         class="main-content relative z-10 w-full max-w-2xl p-8 mx-auto text-center"
         classList={{

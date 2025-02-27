@@ -605,3 +605,88 @@ button,
 .filter-invert {
   filter: invert(1) brightness(1.75);
 }
+
+/* Scanline effect for map overlay */
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.95;
+  }
+  5% {
+    opacity: 0.85;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 0.95;
+  }
+  55% {
+    opacity: 0.95;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  65% {
+    opacity: 0.95;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0.95;
+  }
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 4px,
+    rgba(0, 255, 128, 0.12) 5px,
+    rgba(0, 255, 128, 0.12) 9px
+  );
+  background-size: 100% 10px;
+  animation: 
+    scanlines 40s linear infinite,
+    flicker 4s infinite;
+  pointer-events: none;
+  z-index: 6;
+  mix-blend-mode: overlay;
+  box-shadow: inset 0 0 30px rgba(0, 255, 128, 0.15);
+}
+
+/* Additional CRT effect for the map mode */
+.crt-effect {
+  position: relative;
+}
+
+.crt-effect::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 7;
+  opacity: 0.5;
+}
