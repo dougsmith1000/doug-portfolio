@@ -1,6 +1,7 @@
 import { createSignal, Show, lazy, For, createEffect, onMount } from "solid-js";
 import { isServer } from "solid-js/web";
 import Drawer from "~/components/Drawer";
+import VideoPortfolio from "~/components/VideoPortfolio";
 import resumeData from "~/config/resume.json";
 
 const GoogleMap = lazy(() => import("~/components/GoogleMap"));
@@ -18,6 +19,7 @@ export default function Index() {
   const [isMobile, setIsMobile] = createSignal(false);
   const [drawerCollapsed, setDrawerCollapsed] = createSignal(false);
   const [bioExpanded, setBioExpanded] = createSignal(false);
+  const [activeRightTab, setActiveRightTab] = createSignal<"histoire" | "portfolio">("histoire");
 
   onMount(() => {
     const checkMobile = () => {
@@ -40,7 +42,7 @@ export default function Index() {
     };
   });
 
-  const handleResumeClick = (e: MouseEvent, position: "left" | "right") => {
+  const handleResumeClick = (e: MouseEvent, position: "left" | "right", tab?: "histoire" | "portfolio") => {
     if (isServer) return;
 
     queueMicrotask(() => {
@@ -50,25 +52,18 @@ export default function Index() {
         setLeftDrawerOpen(true);
       } else {
         setRightDrawerOpen(true);
+        if (tab) {
+          setActiveRightTab(tab);
+        }
       }
+
+      setShowMap(true);
 
       setTimeout(() => {
-        setShowMap(true);
-      }, 50);
-
-      if (isMobile()) {
-        setTimeout(() => {
-          const firstJobKey = Object.keys(resumeData)[0];
-          setSelectedJob(firstJobKey);
-          setJobToShow(firstJobKey);
-          setShowJobDetails(true);
-
-          setTimeout(() => {
-            setShowCityImage(true);
-            setDrawerCollapsed(true);
-          }, 300);
-        }, 800);
-      }
+        if (position === "right" && isMobile()) {
+          setDrawerCollapsed(true);
+        }
+      }, 800);
     });
   };
 
@@ -217,15 +212,15 @@ export default function Index() {
         <h3 class="text-5xl mb-8 text-yellow-100 font-playwrite [text-shadow:0_2px_4px_rgba(0,0,0,0.9)]">
           Hello, I'm Doug.
         </h3>
-        <div class="max-w-[300px] mx-auto">
+        <div class="flex flex-col items-center gap-4 mb-7">
           <button
-            onClick={(e) => handleResumeClick(e, "right")}
-            class="btn-shimmer px-8 py-3 text-lg bg-[#0077c2] text-white rounded cursor-pointer relative 
+            onClick={(e) => handleResumeClick(e, "right", "histoire")}
+            class="btn-shimmer w-full max-w-[300px] px-8 py-3 text-lg bg-[#0077c2] text-white rounded cursor-pointer relative 
                 before:absolute before:inset-0 before:border-2 before:border-slate-400 before:opacity-0 
                 before:scale-[1.15] hover:before:scale-100 hover:before:opacity-100 
-                before:transition-all before:duration-300 before:ease-out before:rounded font-playwrite font-bold mb-7"
+                before:transition-all before:duration-300 before:ease-out before:rounded font-playwrite font-bold"
           >
-            Résumé
+            Résumé & Portfolio
           </button>
         </div>
         <div id="bio-section" class="relative mb-6 mx-auto w-full">
@@ -375,13 +370,6 @@ export default function Index() {
         </div>
       </Show>
 
-      {/* <Show when={leftDrawerOpen()}>
-        <Drawer position="left" isOpen={leftDrawerOpen()} onClose={() => closeDrawer("left")}>
-          <h2 class="text-white font-roboto text-2xl">Left Drawer Content</h2>
-          <p class="mt-4">This is the left drawer content.</p>
-        </Drawer>
-      </Show> */}
-
       <Show when={rightDrawerOpen()}>
         <Drawer
           position="right"
@@ -390,49 +378,86 @@ export default function Index() {
           drawerWidth={drawerCollapsed() && isMobile() ? 0 : undefined}
           isCollapsed={drawerCollapsed()}
         >
-          <h2 class="text-white font-ibm-plex-mono text-2xl font-bold mb-8">L'histoire</h2>
+          <div class="drawer-tabs">
+            <button
+              class="drawer-tab cursor-pointer"
+              classList={{
+                "drawer-tab-active": activeRightTab() === "histoire",
+                "drawer-tab-inactive": activeRightTab() !== "histoire",
+              }}
+              onClick={() => setActiveRightTab("histoire")}
+            >
+              L'histoire
+              <div
+                class="drawer-tab-indicator"
+                classList={{
+                  "drawer-tab-indicator-active": activeRightTab() === "histoire",
+                  "drawer-tab-indicator-inactive": activeRightTab() !== "histoire",
+                }}
+              ></div>
+            </button>
+            <button
+              class="drawer-tab cursor-pointer"
+              classList={{
+                "drawer-tab-active": activeRightTab() === "portfolio",
+                "drawer-tab-inactive": activeRightTab() !== "portfolio",
+              }}
+              onClick={() => setActiveRightTab("portfolio")}
+            >
+              Œuvres choisies
+              <div
+                class="drawer-tab-indicator"
+                classList={{
+                  "drawer-tab-indicator-active": activeRightTab() === "portfolio",
+                  "drawer-tab-indicator-inactive": activeRightTab() !== "portfolio",
+                }}
+              ></div>
+            </button>
+          </div>
 
-          <div class="space-y-10 relative">
-            <For each={Object.entries(resumeData)}>
-              {([key, item]) => (
-                <div
-                  class="relative cursor-pointer rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,128,0.2)] group"
-                  classList={{
-                    "shadow-[0_0_20px_rgba(0,255,128,0.3)]": selectedJob() === key,
-                  }}
-                  onClick={() => handleJobSelect(key)}
-                >
-                  <div class="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
-                    <img
-                      src={`/logos/${item.logo}`}
-                      alt={`${item.name} logo`}
-                      class="w-auto h-auto max-w-[40%] min-w-[150px] max-h-[80%] object-contain opacity-20 transition-opacity duration-300 pr-4 drop-shadow-[0_35px_35px_rgba(255,255,255,0.5)]"
-                      classList={{
-                        "opacity-40": selectedJob() === key,
-                        "filter-invert": item.darkLogo,
-                      }}
-                    />
-                  </div>
-                  <div class="relative z-10 p-4">
-                    <h3 class="text-xl font-ibm-plex-mono text-white mb-1 bold">{item.name}</h3>
-                    {item.subname && <h4 class="text-xs font-ibm-plex-mono text-white mb-3">{item.subname}</h4>}
-                    <div
-                      class="inline-block bg-[#1a1a1a] px-3 py-1 rounded
-                        font-lato text-sm text-[#00ff80] font-medium tracking-wide
-                        group-hover:bg-[#00ff80]/10 transition-all duration-300
-                        shadow-[0_0_10px_rgba(0,255,128,0.1)]"
-                      classList={{
-                        "bg-[#00ff80]/20 border-[#00ff80]/70 shadow-[0_0_15px_rgba(0,255,128,0.2)]":
-                          selectedJob() === key,
-                      }}
-                    >
-                      {item.years}
+          <Show when={activeRightTab() === "histoire"}>
+            <div class="space-y-10 relative px-4">
+              <For each={Object.entries(resumeData)}>
+                {([key, item]) => (
+                  <div
+                    class="relative cursor-pointer rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,128,0.2)] group"
+                    classList={{
+                      "shadow-[0_0_20px_rgba(0,255,128,0.3)]": selectedJob() === key,
+                    }}
+                    onClick={() => handleJobSelect(key)}
+                  >
+                    <div class="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
+                      <img
+                        src={`/logos/${item.logo}`}
+                        alt={`${item.name} logo`}
+                        class="w-auto h-auto max-w-[40%] min-w-[150px] max-h-[80%] object-contain opacity-20 transition-opacity duration-300 pr-4 drop-shadow-[0_35px_35px_rgba(255,255,255,0.5)]"
+                        classList={{
+                          "opacity-40": selectedJob() === key,
+                          "filter-invert": item.darkLogo,
+                        }}
+                      />
+                    </div>
+                    <div class="relative z-10 p-4">
+                      <h3 class="text-xl font-ibm-plex-mono text-white mb-1 bold">{item.name}</h3>
+                      {item.subname && <h4 class="text-xs font-ibm-plex-mono text-white mb-3">{item.subname}</h4>}
+                      <div
+                        class="inline-block bg-[#1a1a1a] px-3 py-1 rounded
+                          font-lato text-sm text-[#00ff80] font-medium tracking-wide
+                          group-hover:bg-[#00ff80]/10 transition-all duration-300
+                          shadow-[0_0_10px_rgba(0,255,128,0.1)]"
+                      >
+                        {item.years}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </For>
-          </div>
+                )}
+              </For>
+            </div>
+          </Show>
+
+          <Show when={activeRightTab() === "portfolio"}>
+            <VideoPortfolio />
+          </Show>
         </Drawer>
       </Show>
 

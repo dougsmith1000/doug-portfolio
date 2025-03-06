@@ -11,7 +11,6 @@ export default createHandler(() => (
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-          {/* Critical font styles to prevent FOUF */}
           <style>
             {`
               @font-face {
@@ -38,7 +37,6 @@ export default createHandler(() => (
             `}
           </style>
 
-          {/* Preload fonts to prevent Flash of Unstyled Font (FOUF) */}
           <link
             rel="preload"
             href="/fonts/Playwrite_AU_TAS/PlaywriteAUTAS-VariableFont_wght.ttf"
@@ -100,11 +98,10 @@ export default createHandler(() => (
           {assets}
         </head>
         <body>
-          <div id="app">{children}</div>
-          {/* Hidden element to ensure font is loaded */}
           <div class="font-preloader" aria-hidden="true">
             Playwrite
           </div>
+          <div id="app">{children}</div>
           {scripts}
         </body>
       </html>

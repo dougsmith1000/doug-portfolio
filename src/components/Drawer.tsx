@@ -254,8 +254,8 @@ export default function Drawer(props: DrawerProps) {
           ✕
         </button>
       </Show>
-      <div class="h-full overflow-auto">
-        <div class="p-8 min-w-[280px]">{props.children}</div>
+      <div class="h-full overflow-auto custom-scrollbar">
+        <div class="pt-0 px-8 pb-8 min-w-[280px] container-query overflow-x-hidden">{props.children}</div>
       </div>
     </div>
   );

@@ -607,8 +607,76 @@ button,
   transform: scale(0.95);
 }
 
-/* Collapsed drawer tab styling */
+/* Drawer Tab Styles */
+.drawer-tabs {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow-x: auto;
+  display: flex;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: rgba(23, 23, 23, 0.95);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  padding-top: 0.5rem;
+  border-bottom: 1px solid rgba(82, 82, 82, 0.5);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.drawer-tabs::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 .drawer-tab {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+  font-family: 'IBM Plex Mono', monospace;
+  transition: color 0.3s;
+  position: relative;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.drawer-tab-active {
+  color: #00ff80;
+  font-weight: bold;
+}
+
+.drawer-tab-inactive {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.drawer-tab-inactive:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.drawer-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #00ff80;
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.drawer-tab-indicator-active {
+  transform: scaleX(1);
+}
+
+.drawer-tab-indicator-inactive {
+  transform: scaleX(0);
+}
+
+/* Collapsed drawer tab styling */
+.drawer-tab[onclick="expandDrawer"] {
   position: fixed;
   right: 0;
   top: 25%;
@@ -628,7 +696,7 @@ button,
   animation: pulseGlow var(--glow-pulse-duration) ease-in-out infinite;
 }
 
-.drawer-tab:hover {
+.drawer-tab[onclick="expandDrawer"]:hover {
   background: linear-gradient(
     to bottom,
     rgba(0, 255, 128, 0.5),
@@ -636,6 +704,19 @@ button,
     rgba(0, 255, 128, 0.5)
   );
   box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
+}
+
+@container drawer (max-width: 400px) {
+  .drawer-tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .drawer-tabs {
+    justify-content: flex-start;
+    padding-bottom: 2px;
+    margin-bottom: 1rem;
+  }
 }
 
 .filter-invert {
@@ -794,4 +875,177 @@ button,
 .links a:hover svg {
   transform: scale(1.15);
   stroke: rgba(0, 255, 128, 1);
+}
+
+/* Video Portfolio Styles */
+.video-portfolio {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.video-portfolio::-webkit-scrollbar {
+  width: 6px;
+}
+
+.video-portfolio::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.video-portfolio::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 128, 0.3);
+  border-radius: 3px;
+}
+
+.video-portfolio::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 128, 0.5);
+}
+
+/* Video Item Styles */
+.video-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: videoFadeIn 0.5s ease forwards;
+}
+
+.video-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 255, 128, 0.2);
+}
+
+.play-button {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.video-thumbnail:hover .play-button {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes videoFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.video-item:nth-child(1) { animation-delay: 0.1s; }
+.video-item:nth-child(2) { animation-delay: 0.2s; }
+.video-item:nth-child(3) { animation-delay: 0.3s; }
+
+/* Modal styles */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalScaleIn {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.modal-backdrop {
+  animation: modalFadeIn 0.3s ease forwards;
+}
+
+.modal-content {
+  animation: modalScaleIn 0.3s ease forwards;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 128, 0.3);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 128, 0.5);
+}
+
+/* Container Query Setup */
+.container-query {
+  container-type: inline-size;
+  container-name: drawer;
+}
+
+/* Container Query Styles for Video Portfolio */
+.video-title {
+  font-size: 1.25rem; /* text-xl */
+}
+
+.video-description {
+  font-size: 1rem;
+}
+
+.video-label {
+  font-size: 1rem;
+}
+
+.video-text {
+  font-size: 1rem;
+}
+
+.video-tech {
+  font-size: 0.75rem; /* text-xs */
+}
+
+.video-item {
+  margin-bottom: 2rem;
+}
+
+@container drawer (max-width: 400px) {
+  .video-title {
+    font-size: 1rem; /* text-base */
+    margin-bottom: 0.5rem;
+  }
+  
+  .video-description {
+    font-size: 0.875rem; /* text-sm */
+    margin-bottom: 0.5rem;
+  }
+  
+  .video-label {
+    font-size: 0.875rem; /* text-sm */
+  }
+  
+  .video-text {
+    font-size: 0.875rem; /* text-sm */
+  }
+  
+  .video-tech {
+    font-size: 0.7rem; /* smaller than text-xs */
+    padding: 0.15rem 0.4rem;
+  }
+  
+  .video-content {
+    padding: 0.75rem !important;
+  }
+  
+  .video-container .space-y-8 {
+    margin-top: 0.5rem;
+  }
+  
+  .video-item {
+    margin-bottom: 1.5rem;
+  }
 }
