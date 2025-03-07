@@ -220,7 +220,7 @@ export default function Index() {
                 before:scale-[1.15] hover:before:scale-100 hover:before:opacity-100 
                 before:transition-all before:duration-300 before:ease-out before:rounded font-playwrite font-bold"
           >
-            Résumé & Portfolio
+            Résumé
           </button>
         </div>
         <div id="bio-section" class="relative mb-6 mx-auto w-full">
@@ -357,10 +357,11 @@ export default function Index() {
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="rgba(255,255,255,0.4)"
+              stroke="rgba(0, 0, 0, 0.5)"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
+              class="drawer-tab-svg"
             >
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -461,7 +462,7 @@ export default function Index() {
         </Drawer>
       </Show>
 
-      <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-30 flex justify-center gap-6 bg-neutral-900/50 px-4 py-2 rounded-full shadow-lg">
+      <div class="fixed top-0 left-1/2 transform -translate-x-1/2 z-30 flex justify-center gap-6 bg-neutral-900/50 px-4 py-2 rounded-b-sm shadow-lg">
         <a href="mailto:doug.mcghost@gmail.com" class="text-white/70 hover:text-white transition-colors">
           <svg
             xmlns="http://www.w3.org/2000/svg"

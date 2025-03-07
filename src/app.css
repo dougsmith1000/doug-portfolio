@@ -676,7 +676,8 @@ button,
 }
 
 /* Collapsed drawer tab styling */
-.drawer-tab[onclick="expandDrawer"] {
+.drawer-tab[onclick="expandDrawer"],
+div.drawer-tab {
   position: fixed;
   right: 0;
   top: 25%;
@@ -691,12 +692,16 @@ button,
   border-radius: 0.3rem 0 0 0.3rem;
   cursor: pointer;
   box-shadow: var(--neon-glow-1), var(--neon-glow-2);
-  z-index: 30;
+  z-index: 50;
   transition: all 0.3s ease;
   animation: pulseGlow var(--glow-pulse-duration) ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.drawer-tab[onclick="expandDrawer"]:hover {
+.drawer-tab[onclick="expandDrawer"]:hover,
+div.drawer-tab:hover {
   background: linear-gradient(
     to bottom,
     rgba(0, 255, 128, 0.5),
@@ -704,6 +709,20 @@ button,
     rgba(0, 255, 128, 0.5)
   );
   box-shadow: var(--neon-glow-1), var(--neon-glow-2), var(--neon-glow-3);
+}
+
+.drawer-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawer-tab-svg {
+  transition: transform 0.3s ease;
+}
+
+div.drawer-tab:hover .drawer-tab-svg {
+  transform: scale(1.1);
 }
 
 @container drawer (max-width: 400px) {

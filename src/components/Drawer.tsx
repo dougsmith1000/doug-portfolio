@@ -228,7 +228,7 @@ export default function Drawer(props: DrawerProps) {
 
   return (
     <div
-      class={`absolute top-0 h-full bg-neutral-900/90 text-white shadow-[0_0_12px_rgba(0,0,0,0.3)] z-20 ${
+      class={`absolute top-0 h-full bg-neutral-900/90 text-white shadow-[0_0_12px_rgba(0,0,0,0.3)] z-90 ${
         props.position === "left" ? "left-0" : "right-0"
       } ${isDragging() ? "select-none" : ""}`}
       style={{
