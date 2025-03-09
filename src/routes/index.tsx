@@ -19,7 +19,7 @@ export default function Index() {
   const [isMobile, setIsMobile] = createSignal(false);
   const [drawerCollapsed, setDrawerCollapsed] = createSignal(false);
   const [bioExpanded, setBioExpanded] = createSignal(false);
-  const [activeRightTab, setActiveRightTab] = createSignal<"histoire" | "portfolio">("histoire");
+  const [activeRightTab, setActiveRightTab] = createSignal<"history" | "portfolio">("history");
 
   onMount(() => {
     const checkMobile = () => {
@@ -42,7 +42,7 @@ export default function Index() {
     };
   });
 
-  const handleResumeClick = (e: MouseEvent, position: "left" | "right", tab?: "histoire" | "portfolio") => {
+  const handleResumeClick = (e: MouseEvent, position: "left" | "right", tab?: "history" | "portfolio") => {
     if (isServer) return;
 
     queueMicrotask(() => {
@@ -214,7 +214,7 @@ export default function Index() {
         </h3>
         <div class="flex flex-col items-center gap-4 mb-7">
           <button
-            onClick={(e) => handleResumeClick(e, "right", "histoire")}
+            onClick={(e) => handleResumeClick(e, "right", "history")}
             class="btn-shimmer w-full max-w-[300px] px-8 py-3 text-lg bg-[#0077c2] text-white rounded cursor-pointer relative 
                 before:absolute before:inset-0 before:border-2 before:border-slate-400 before:opacity-0 
                 before:scale-[1.15] hover:before:scale-100 hover:before:opacity-100 
@@ -383,17 +383,17 @@ export default function Index() {
             <button
               class="drawer-tab cursor-pointer"
               classList={{
-                "drawer-tab-active": activeRightTab() === "histoire",
-                "drawer-tab-inactive": activeRightTab() !== "histoire",
+                "drawer-tab-active": activeRightTab() === "history",
+                "drawer-tab-inactive": activeRightTab() !== "history",
               }}
-              onClick={() => setActiveRightTab("histoire")}
+              onClick={() => setActiveRightTab("history")}
             >
-              L'histoire
+              History
               <div
                 class="drawer-tab-indicator"
                 classList={{
-                  "drawer-tab-indicator-active": activeRightTab() === "histoire",
-                  "drawer-tab-indicator-inactive": activeRightTab() !== "histoire",
+                  "drawer-tab-indicator-active": activeRightTab() === "history",
+                  "drawer-tab-indicator-inactive": activeRightTab() !== "history",
                 }}
               ></div>
             </button>
@@ -405,7 +405,7 @@ export default function Index() {
               }}
               onClick={() => setActiveRightTab("portfolio")}
             >
-              Œuvres choisies
+              Favorite Projects
               <div
                 class="drawer-tab-indicator"
                 classList={{
@@ -416,7 +416,7 @@ export default function Index() {
             </button>
           </div>
 
-          <Show when={activeRightTab() === "histoire"}>
+          <Show when={activeRightTab() === "history"}>
             <div class="space-y-10 relative px-4">
               <For each={Object.entries(resumeData)}>
                 {([key, item]) => (

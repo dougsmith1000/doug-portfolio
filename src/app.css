@@ -618,7 +618,7 @@ button,
   width: 100%;
   position: sticky;
   top: 0;
-  background-color: rgba(23, 23, 23, 0.95);
+  background-color: transparent;
   backdrop-filter: blur(4px);
   z-index: 10;
   padding-top: 0.5rem;
